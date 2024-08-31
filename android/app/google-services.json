@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1020996169127",
+    "project_id": "user555-3d756",
+    "storage_bucket": "user555-3d756.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020996169127:android:a0400462840d9a68831a82",
+        "android_client_info": {
+          "package_name": "com.example.users_app_cracon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA23QEm452hc77OvmRA8hnzmNiTPYnGp5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
