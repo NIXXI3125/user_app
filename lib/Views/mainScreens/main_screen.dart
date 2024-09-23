@@ -56,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
   TextEditingController pickupcontroller = TextEditingController();
   TextEditingController dropcontroller = TextEditingController();
   bool openNavigationDrawer = true;
-
+  bool _isHeight = false;
   bool activeNearbyDriverKeysLoaded = false;
   BitmapDescriptor? activeNearbyIcon;
 
@@ -512,14 +512,17 @@ class _MainScreenState extends State<MainScreen> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      if (Provider.of<AppInfo>(context, listen: false)
-                              .userDropOffLocation !=
-                          null) {
-                        saveRideRequestInformation();
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Please Select Destination Location");
-                      }
+                      // if (Provider.of<AppInfo>(context, listen: false)
+                      //         .userDropOffLocation !=
+                      //     null) {
+                      //   saveRideRequestInformation();
+                      // } else {
+                      //   Fluttertoast.showToast(
+                      //       msg: "Please Select Destination Location");
+                      // }
+                      setState(() {
+                        _isHeight = !_isHeight;
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -536,36 +539,19 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           ),
-          body: Stack(
-            children: [
-              // GoogleMap(
-              //   mapType: MapType.normal,
-              //   myLocationEnabled: true,
-              //   zoomGesturesEnabled: true,
-              //   zoomControlsEnabled: true,
-              //   initialCameraPosition: _kGooglePlex,
-              //   polylines: polyLineSet,
-              //   markers: markersSet,
-              //   circles: circleSet,
-              //   onMapCreated: (GoogleMapController controller) {
-              //     _controllerGoogleMap.complete(controller);
-              //     newGoogleMapController = controller;
-
-              //     //for black theme google map
-              //     blackThemeGoogleMap();
-
-              //     locateUserPosition();
-              //   },
-              // ),
-
-              //ui for searching location
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: AnimatedSize(
-                  curve: Curves.easeIn,
-                  duration: const Duration(milliseconds: 120),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AnimatedContainer(
+                  height: _isHeight ? _height * 0.6 : 0,
+                  alignment: Alignment.bottomCenter,
+                  curve: Curves.bounceIn,
+                  duration: const Duration(milliseconds: 400),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: const Color(0xFFFAE6D5),
+                  ),
                   child: Container(
                     height: _height * 0.6,
                     decoration: const BoxDecoration(
@@ -597,19 +583,25 @@ class _MainScreenState extends State<MainScreen> {
                                     TextFormField(
                                       decoration: const InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: 'Enter Full Address',
+                                        hintText: 'Floor or Plot Number',
                                       ),
                                     ),
                                     TextFormField(
                                       decoration: const InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: 'Enter Contact Name',
+                                        hintText: 'Contact Name',
                                       ),
                                     ),
                                     TextFormField(
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Enter Contact Number',
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                            gapPadding: 5,
+                                            borderSide: BorderSide(
+                                                color: Colors.grey,
+                                                width: 0.5)),
+                                        hintText: 'Contact Number',
                                       ),
                                     ),
                                   ],
@@ -690,8 +682,8 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }),
@@ -921,6 +913,27 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 }
+
+                // GoogleMap(
+                //   mapType: MapType.normal,
+                //   myLocationEnabled: true,
+                //   zoomGesturesEnabled: true,
+                //   zoomControlsEnabled: true,
+                //   initialCameraPosition: _kGooglePlex,
+                //   polylines: polyLineSet,
+                //   markers: markersSet,
+                //   circles: circleSet,
+                //   onMapCreated: (GoogleMapController controller) {
+                //     _controllerGoogleMap.complete(controller);
+                //     newGoogleMapController = controller;
+
+                //     //for black theme google map
+                //     blackThemeGoogleMap();
+
+                //     locateUserPosition();
+                //   },
+                // ),
+
 // GestureDetector(
 //                             onTap: () async {
 //                               // search places screen for pickup

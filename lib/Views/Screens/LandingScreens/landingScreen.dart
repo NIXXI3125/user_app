@@ -218,10 +218,11 @@ class _LandingScreenState extends State<LandingScreen> {
                         onTap: () {
                           Navigator.of(context).push(
                             CupertinoPageRoute(
-                                builder: (context) => ChangeNotifierProvider(
-                                      create: (context) => Mainscreenprovider(),
-                                      child: MainScreen(),
-                                    )),
+                              builder: (context) => ChangeNotifierProvider(
+                                create: (context) => Mainscreenprovider(),
+                                child: MainScreen(),
+                              ),
+                            ),
                           );
                         },
                         child: Container(
