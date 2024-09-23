@@ -2,8 +2,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:users_app_cracon/infoHandler/app_info.dart';
-import 'package:users_app_cracon/splashScreen/splash_screen.dart';
+import 'package:users_app_cracon/Controller/infoHandler/app_info.dart';
+import 'package:users_app_cracon/Views/splashScreen/splash_screen.dart';
 
 
 void main() async

@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.users_app_cracon">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -7,7 +6,8 @@
     <application
         android:label="users_app_cracon"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:extractNativeLibs="true">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA23QEm452hc77OvmRA8hnzmNiTPYnGp5g"/>
