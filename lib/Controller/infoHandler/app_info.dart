@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/models/PickupDetailsModel.dart';
 import 'package:users_app_cracon/models/directions.dart';
 import 'package:users_app_cracon/models/dropDetailModel.dart';
@@ -9,11 +11,15 @@ class AppInfo extends ChangeNotifier {
   Dropdetailsmodel? drop;
 
   void updatePickUpLocationAddress(Directions userPickUpAddress) {
+    userPickupLocationLatitude = userPickUpAddress.locationLatitude;
+    userPickupLocationLongitude = userPickUpAddress.locationLongitude;
     userPickUpLocation = userPickUpAddress;
     notifyListeners();
   }
 
   void updateDropOffLocationAddress(Directions dropOffAddress) {
+    userDropLocationLatitude = dropOffAddress.locationLatitude;
+    userDropLocationLongitude = dropOffAddress.locationLongitude;
     userDropOffLocation = dropOffAddress;
     notifyListeners();
   }

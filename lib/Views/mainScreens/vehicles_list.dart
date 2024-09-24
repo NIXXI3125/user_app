@@ -1,7 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:users_app_cracon/Controller/global/global.dart';
+import 'package:users_app_cracon/Controller/providers/searchingScreenProvider.dart';
 import 'package:users_app_cracon/Controller/providers/vehiclesListProvider.dart';
+import 'package:users_app_cracon/Views/mainScreens/searching_screens.dart';
 
 class VehiclesList extends StatefulWidget {
   VehiclesList({super.key, this.referenceRideRequest});
@@ -66,7 +69,12 @@ class _VehiclesListState extends State<VehiclesList> {
 
   @override
   void initState() {
-    Provider.of<Vehicleslistprovider>(context, listen: false).getVehiclesCost();
+    Provider.of<Vehicleslistprovider>(context, listen: false)
+        .getHeavyVehiclesCost();
+    Provider.of<Vehicleslistprovider>(context, listen: false)
+        .getDeliveryVehiclesCost();
+    Provider.of<Vehicleslistprovider>(context, listen: false)
+        .getFixedVehiclesCost();
     super.initState();
   }
 
@@ -81,46 +89,129 @@ class _VehiclesListState extends State<VehiclesList> {
           appBar: AppBar(
             title: const Text('Available Vehicles'),
           ),
-          body: ListView.separated(
-            itemCount: vehicles.length,
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 1,
-                color: Colors.grey.shade400,
-                indent: width * 0.1,
-                endIndent: width * 0.1,
-              );
-            },
-            itemBuilder: (context, index) {
-              return ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                leading: Image.asset(
-                  vehicles[index]['image'],
-                  width: 50,
-                  height: 50,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.error,
-                      color: Colors.red,
-                      size: 30,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                ...List.generate(
+                  vehicle.deliveryvehicleList!.length,
+                  (index) {
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 5),
+                      leading: Image.network(
+                        vehicle.deliveryvehicleList![index].image,
+                        width: 50,
+                        height: 50,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 30,
+                          );
+                        },
+                      ),
+                      title: Text(vehicle.deliveryvehicleList![index].type),
+                      trailing: Text(
+                        "₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}",
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                    create: (context) =>
+                                        Searchingscreenprovider(),
+                                    child: const SearchingScreens(),
+                                  )),
+                        );
+                      },
                     );
                   },
                 ),
-                title: Text(vehicles[index]['name']),
-                trailing: Text('₹ ${vehicle.vehicleRates!.bikeBasePrice}'),
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => SelectNearestActiveDriverScreen(
-                  //       vehicleType: vehicles[index]['type'],
-                  //     ),
-                  //   ),
-                  // );
-                },
-              );
-            },
+                ...List.generate(
+                  vehicle.fixedvehicleList!.length,
+                  (index) {
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 5),
+                      leading: Image.network(
+                        vehicle.fixedvehicleList![index].image,
+                        width: 50,
+                        height: 50,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 30,
+                          );
+                        },
+                      ),
+                      title: Text(vehicle.fixedvehicleList![index].type),
+                      trailing: Text(
+                        "₹ ${vehicle.calculateFareAmountForFixedVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.fixedvehicleList![index])}",
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SelectNearestActiveDriverScreen(
+                        //       vehicleType: vehicles[index]['type'],
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                    );
+                  },
+                ),
+                ...List.generate(
+                  vehicle.heavyvehicleList!.length,
+                  (index) {
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 5),
+                      leading: Image.network(
+                        vehicle.heavyvehicleList![index].image,
+                        width: 50,
+                        height: 50,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 30,
+                          );
+                        },
+                      ),
+                      title: Text(vehicle.heavyvehicleList![index].type),
+                      trailing: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "₹ ${vehicle.calculateFareAmountForHeavyVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.heavyvehicleList![index])}",
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          const Text(
+                            "/hr",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SelectNearestActiveDriverScreen(
+                        //       vehicleType: vehicles[index]['type'],
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },

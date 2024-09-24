@@ -655,7 +655,7 @@ class _MainScreenState extends State<MainScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: _height * 0.664,
+                height: _height * 0.64,
                 width: _width,
                 child: GoogleMap(
                   mapType: MapType.normal,

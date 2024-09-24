@@ -9,6 +9,10 @@ DatabaseReference fbase = FirebaseDatabase.instance.ref();
 User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
 Position? userPickupLocation;
+double? userPickupLocationLongitude;
+double? userPickupLocationLatitude;
+double? userDropLocationLongitude;
+double? userDropLocationLatitude;
 List dList = []; // online oe active drivers Information List
 DirectionDetailsInfo? tripDirectionDetailsInfo;
 String? chosenDriverId = "";

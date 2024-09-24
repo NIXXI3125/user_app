@@ -52,7 +52,9 @@ class PlacePredictionTileDsgn extends StatelessWidget {
               responseApi["result"]["geometry"]["location"]["lng"];
 
           Provider.of<AppInfo>(context, listen: false)
-              .updatePickUpLocationAddress(direction);
+              .updatePickUpLocationAddress(
+            direction,
+          );
 
           Navigator.pop(context, "obtainedPickup");
         }
