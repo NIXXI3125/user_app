@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
@@ -15,9 +16,12 @@ import 'package:users_app_cracon/Controller/assistants/push_notification.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/infoHandler/app_info.dart';
 import 'package:users_app_cracon/Controller/providers/mainScreenProvider.dart';
+import 'package:users_app_cracon/Controller/providers/vehiclesListProvider.dart';
 import 'package:users_app_cracon/Views/mainScreens/search_places_screen.dart';
 import 'package:users_app_cracon/Views/mainScreens/search_places_screen_tu.dart';
 import 'package:users_app_cracon/Views/mainScreens/select_nearest_active_driver_screen.dart';
+import 'package:users_app_cracon/Views/mainScreens/vehicles_list.dart';
+import 'package:users_app_cracon/Views/widgets/BottomModalSheet.dart';
 import 'package:users_app_cracon/Views/widgets/dottedLine.dart';
 import 'package:users_app_cracon/models/active_nearby_available_drivers.dart';
 import 'package:users_app_cracon/Views/widgets/my_drawer.dart';
@@ -42,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Position? userCurrentPosition;
   var geoLocator = Geolocator();
-
+  LayerLink _link = LayerLink();
   LocationPermission? _locationPermission;
   double bottomPaddingOfMap = 0;
 
@@ -57,6 +61,7 @@ class _MainScreenState extends State<MainScreen> {
   TextEditingController dropcontroller = TextEditingController();
   bool openNavigationDrawer = true;
   bool _isHeight = false;
+  bool isVisible = true;
   bool activeNearbyDriverKeysLoaded = false;
   BitmapDescriptor? activeNearbyIcon;
 
@@ -261,8 +266,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    pickupcontroller =
-        TextEditingController(text: userPickupLocation!.toString());
     checkIfLocationPermissionAllowed();
   }
 
@@ -328,10 +331,17 @@ class _MainScreenState extends State<MainScreen> {
     await retrieveOnlineDriversInformation(onlineNearByAvailableDriversList);
 
     var response = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (c) => SelectNearestActiveDriversScreen(
-                referenceRideRequest: referenceRideRequest)));
+      context,
+      MaterialPageRoute(
+          builder: (c) => ChangeNotifierProvider(
+                create: (context) => Vehicleslistprovider(),
+                child: VehiclesList(),
+              )
+
+          // SelectNearestActiveDriversScreen(
+          //     referenceRideRequest: referenceRideRequest)
+          ),
+    );
 
     if (response == "driverChoosed") {
       FirebaseDatabase.instance
@@ -438,64 +448,166 @@ class _MainScreenState extends State<MainScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    height: _height * 0.055,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(35),
-                    ),
-                    child: TextField(
-                      controller: pickupcontroller,
-                      decoration: const InputDecoration(
-                        hintText: 'Pickup Location',
-                        border: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.circle_outlined,
-                          color: Color(0xFFFF914D),
-                          size: 25,
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      var responseFromSearchScreenTu = Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => SearchPlacesScreenTu()));
+
+                      if (responseFromSearchScreenTu == "obtainedPickup") {}
+                    },
+                    child: Container(
+                      height: _height * 0.055,
+                      width: _width * 0.9,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(35),
                       ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.circle_outlined,
+                            color: Color(0xFFFF914D),
+                            size: 25,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            Provider.of<AppInfo>(context).userPickUpLocation !=
+                                    null
+                                ? Provider.of<AppInfo>(context)
+                                    .userPickUpLocation!
+                                    .locationName!
+                                : "What is the Pickup Location? ",
+                            style: TextStyle(
+                              color: (Provider.of<AppInfo>(context)
+                                          .userPickUpLocation !=
+                                      null)
+                                  ? Colors.black
+                                  : Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // TextField(
+                      //   controller: pickupcontroller,
+                      //   // onChanged: (value) {},
+                      //   onTap: () {
+                      //     var responseFromSearchScreenTu = Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (c) => SearchPlacesScreenTu()));
+
+                      //     if (responseFromSearchScreenTu == "obtainedPickup") {}
+                      //   },
+                      //   decoration: const InputDecoration(
+                      //     hintText: 'Pickup Location',
+                      //     border: InputBorder.none,
+                      //     errorBorder: InputBorder.none,
+                      //     disabledBorder: InputBorder.none,
+                      //     enabledBorder: InputBorder.none,
+                      //     prefixIcon: Icon(
+                      //       Icons.circle_outlined,
+                      //       color: Color(0xFFFF914D),
+                      //       size: 25,
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                   ),
                   SizedBox(
                     height: _height * 0.035,
                   ),
-                  Container(
-                    height: _height * 0.055,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(35),
-                    ),
-                    child: TextField(
-                      controller: dropcontroller,
-                      onChanged: (value) async {
-                        await screenprovider.getDropLocation(value);
-                        print("drop locations:" +
-                            screenprovider.dropLocationList.toString());
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Drop Location',
-                        border: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.location_on,
-                          color: Color(0xFFFF914D),
-                          size: 25,
+                  GestureDetector(
+                    onTap: () async {
+                      var responseFromSearchScreen = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (c) => SearchPlacesScreen(),
                         ),
+                      );
+
+                      if (responseFromSearchScreen == "obtainedDropOff") {
+                        setState(
+                          () {
+                            openNavigationDrawer = false;
+                          },
+                        );
+
+                        await drawPolyLineFromOriginToDestination();
+                      }
+                    },
+                    child: Container(
+                      height: _height * 0.055,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(35),
                       ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Color(0xFFFF914D),
+                            size: 25,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            Provider.of<AppInfo>(context).userDropOffLocation !=
+                                    null
+                                ? Provider.of<AppInfo>(context)
+                                    .userDropOffLocation!
+                                    .locationName!
+                                : "What is the Drop Location? ",
+                            style: TextStyle(
+                              color: (Provider.of<AppInfo>(context)
+                                          .userDropOffLocation !=
+                                      null)
+                                  ? Colors.black
+                                  : Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // TextField(
+                      //   controller: dropcontroller,
+                      //   onChanged: (value) async {
+                      //     await screenprovider.getDropLocation(value);
+                      //     print("drop locations:" +
+                      //         screenprovider.dropLocationList.toString());
+                      //   },
+                      //   onTap: () async {
+                      //     // go to search places screen
+                      //   },
+                      //   decoration: const InputDecoration(
+                      //     hintText: 'Drop Location',
+                      //     border: InputBorder.none,
+                      //     errorBorder: InputBorder.none,
+                      //     disabledBorder: InputBorder.none,
+                      //     enabledBorder: InputBorder.none,
+                      //     prefixIcon: Icon(
+                      //       Icons.location_on,
+                      //       color: Color(0xFFFF914D),
+                      //       size: 25,
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                   ),
                   SizedBox(
@@ -512,16 +624,16 @@ class _MainScreenState extends State<MainScreen> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      // if (Provider.of<AppInfo>(context, listen: false)
-                      //         .userDropOffLocation !=
-                      //     null) {
-                      //   saveRideRequestInformation();
-                      // } else {
-                      //   Fluttertoast.showToast(
-                      //       msg: "Please Select Destination Location");
-                      // }
+                      if (Provider.of<AppInfo>(context, listen: false)
+                              .userDropOffLocation !=
+                          null) {
+                        saveRideRequestInformation();
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Please Select Destination Location");
+                      }
                       setState(() {
-                        _isHeight = !_isHeight;
+                        isVisible = !isVisible;
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -539,151 +651,33 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                AnimatedContainer(
-                  height: _isHeight ? _height * 0.6 : 0,
-                  alignment: Alignment.bottomCenter,
-                  curve: Curves.bounceIn,
-                  duration: const Duration(milliseconds: 400),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: const Color(0xFFFAE6D5),
-                  ),
-                  child: Container(
-                    height: _height * 0.6,
-                    decoration: const BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 18),
-                      child: Column(
-                        children: [
-                          // Pickup Container
-                          Stack(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(15),
-                                margin: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.black54,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Floor or Plot Number',
-                                      ),
-                                    ),
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Contact Name',
-                                      ),
-                                    ),
-                                    TextFormField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            gapPadding: 5,
-                                            borderSide: BorderSide(
-                                                color: Colors.grey,
-                                                width: 0.5)),
-                                        hintText: 'Contact Number',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                left: 20,
-                                top: -4,
-                                child: Container(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 10, left: 10, right: 10),
-                                  color: Colors.white,
-                                  child: const Text(
-                                    'Enter Pickup Details',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          // Drop Container
-                          Stack(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(15),
-                                margin: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.black54,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Enter Full Address',
-                                      ),
-                                    ),
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Enter Contact Name',
-                                      ),
-                                    ),
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Enter Contact Number',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                left: 20,
-                                top: -4,
-                                child: Container(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 10, left: 10, right: 10),
-                                  color: Colors.white,
-                                  child: const Text(
-                                    'Enter Drop Details',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: _height * 0.664,
+                width: _width,
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  myLocationEnabled: true,
+                  zoomGesturesEnabled: true,
+                  zoomControlsEnabled: true,
+                  initialCameraPosition: _kGooglePlex,
+                  polylines: polyLineSet,
+                  markers: markersSet,
+                  circles: circleSet,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controllerGoogleMap.complete(controller);
+                    newGoogleMapController = controller;
+
+                    //for black theme google map
+                    blackThemeGoogleMap();
+
+                    locateUserPosition();
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }),
@@ -914,25 +908,25 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-                // GoogleMap(
-                //   mapType: MapType.normal,
-                //   myLocationEnabled: true,
-                //   zoomGesturesEnabled: true,
-                //   zoomControlsEnabled: true,
-                //   initialCameraPosition: _kGooglePlex,
-                //   polylines: polyLineSet,
-                //   markers: markersSet,
-                //   circles: circleSet,
-                //   onMapCreated: (GoogleMapController controller) {
-                //     _controllerGoogleMap.complete(controller);
-                //     newGoogleMapController = controller;
+// GoogleMap(
+//   mapType: MapType.normal,
+//   myLocationEnabled: true,
+//   zoomGesturesEnabled: true,
+//   zoomControlsEnabled: true,
+//   initialCameraPosition: _kGooglePlex,
+//   polylines: polyLineSet,
+//   markers: markersSet,
+//   circles: circleSet,
+//   onMapCreated: (GoogleMapController controller) {
+//     _controllerGoogleMap.complete(controller);
+//     newGoogleMapController = controller;
 
-                //     //for black theme google map
-                //     blackThemeGoogleMap();
+//     //for black theme google map
+//     blackThemeGoogleMap();
 
-                //     locateUserPosition();
-                //   },
-                // ),
+//     locateUserPosition();
+//   },
+// ),
 
 // GestureDetector(
 //                             onTap: () async {

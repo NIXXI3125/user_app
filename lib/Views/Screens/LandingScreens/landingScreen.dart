@@ -97,33 +97,22 @@ class _LandingScreenState extends State<LandingScreen> {
                         ),
                       ],
                     ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            image: const DecorationImage(
-                              image: AssetImage("images/profile.jpg"),
-                              fit: BoxFit.cover,
-                            ),
+                    GestureDetector(
+                      onTap: () {
+                        // Scaffold.of(context).openDrawer();
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage("images/profile.jpg"),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Positioned(
-                            left: 40,
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3),
-                                color: const Color(0xFFFF914D),
-                                shape: BoxShape.circle,
-                              ),
-                            )),
-                      ],
+                      ),
                     ),
                   ],
                 ),

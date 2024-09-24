@@ -1,41 +1,35 @@
-
 import 'package:flutter/material.dart';
 import 'package:users_app_cracon/Controller/assistants/request_assistant.dart';
 import 'package:users_app_cracon/Controller/global/map_key.dart';
 import 'package:users_app_cracon/models/predicted_placestu.dart';
 import 'package:users_app_cracon/Views/widgets/place_prediction_tiletu.dart';
 
-class SearchPlacesScreenTu extends StatefulWidget
-{
+class SearchPlacesScreenTu extends StatefulWidget {
   @override
   State<SearchPlacesScreenTu> createState() => _SearchPlacesScreenTuState();
 }
 
-
-
-
-class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
-{
+class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu> {
   List<PredictedPlacestu> placePredictedtuList = [];
 
-  void findPlaceAutoCompleteSrch(String inputText) async
-  {
-    if(inputText.length > 1)
-    {
-      String urlAutoCompleteSrch = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$inputText&key=$mapKey&components=country:IN";
+  void findPlaceAutoCompleteSrch(String inputText) async {
+    if (inputText.length > 1) {
+      String urlAutoCompleteSrch =
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$inputText&key=$mapKey&components=country:IN";
 
-      var responseAutoCompleteSrch = await RequestAssistant.receiveRequest(urlAutoCompleteSrch);
+      var responseAutoCompleteSrch =
+          await RequestAssistant.receiveRequest(urlAutoCompleteSrch);
 
-      if(responseAutoCompleteSrch == "Error Occurred, Failed. No Response.")
-      {
+      if (responseAutoCompleteSrch == "Error Occurred, Failed. No Response.") {
         return;
       }
 
-      if(responseAutoCompleteSrch["status"] == "OK")
-      {
+      if (responseAutoCompleteSrch["status"] == "OK") {
         var placePrediction = responseAutoCompleteSrch["predictions"];
 
-        var placePredictionList = (placePrediction as List).map((jsonData) => PredictedPlacestu.fromJson(jsonData)).toList();
+        var placePredictionList = (placePrediction as List)
+            .map((jsonData) => PredictedPlacestu.fromJson(jsonData))
+            .toList();
 
         setState(() {
           placePredictedtuList = placePredictionList;
@@ -45,8 +39,9 @@ class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
   }
 
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
+    double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -55,11 +50,10 @@ class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
           Container(
             height: 160,
             decoration: const BoxDecoration(
-              color: Colors.black54,
-              boxShadow:
-              [
+              color: Color(0xFFFF914D),
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.lightGreen,
+                  color: Colors.black45,
                   blurRadius: 1,
                   spreadRadius: 0.5,
                   offset: Offset(
@@ -73,14 +67,11 @@ class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-
                   const SizedBox(height: 25.0),
-
                   Stack(
                     children: [
                       GestureDetector(
-                        onTap: ()
-                        {
+                        onTap: () {
                           Navigator.pop(context);
                         },
                         child: const Icon(
@@ -88,7 +79,6 @@ class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
                           color: Colors.white,
                         ),
                       ),
-
                       const Center(
                         child: Text(
                           "Set Pick Up Location",
@@ -102,35 +92,39 @@ class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
                     ],
                   ),
                   const SizedBox(height: 16.0),
-
                   Row(
                     children: [
-
-                      const Icon(
-                        Icons.adjust_sharp,
-                        color: Colors.white,
+                      const SizedBox(
+                        width: 10.0,
                       ),
-
-
-                      const SizedBox(width: 18.0,),
-
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            onChanged: (valueTyped)
-                            {
-                              findPlaceAutoCompleteSrch(valueTyped);
-                            },
-                            decoration: const InputDecoration(
-                              hintText: "Search Here...",
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(
-                                left: 11.0,
-                                top: 8.0,
-                                bottom: 8.0,
+                          child: Container(
+                            height: _height * 0.055,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(35),
+                            ),
+                            child: TextField(
+                              onChanged: (valueTyped) {
+                                findPlaceAutoCompleteSrch(valueTyped);
+                              },
+                              decoration: const InputDecoration(
+                                hintText: 'Pickup Location',
+                                border: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.circle_outlined,
+                                  color: Color(0xFFFF914D),
+                                  size: 25,
+                                ),
                               ),
                             ),
                           ),
@@ -149,17 +143,17 @@ class _SearchPlacesScreenTuState extends State<SearchPlacesScreenTu>
                   child: ListView.separated(
                     itemCount: placePredictedtuList.length,
                     physics: ClampingScrollPhysics(),
-                    itemBuilder: (context, index)
-                    {
+                    itemBuilder: (context, index) {
                       return PlacePredictionTileDsgn(
                         predictedPlacestu: placePredictedtuList[index],
                       );
                     },
-                    separatorBuilder: (BuildContext context, int index)
-                    {
-                      return const Divider(
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider(
                         height: 1,
-                        color: Colors.white70,
+                        color: Colors.black87,
+                        indent: _width * 0.05,
+                        endIndent: _width * 0.05,
                         thickness: 1,
                       );
                     },

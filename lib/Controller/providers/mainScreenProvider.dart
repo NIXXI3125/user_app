@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:users_app_cracon/Controller/assistants/request_assistant.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/global/map_key.dart';
+import 'package:users_app_cracon/Views/widgets/progress_dialog.dart';
+import 'package:users_app_cracon/models/directions.dart';
 
 import '../../models/predicted_placestu.dart';
 
@@ -77,6 +79,37 @@ class Mainscreenprovider extends ChangeNotifier {
         notifyListeners();
         state = MainScreenState.loaded;
       }
+    }
+  }
+
+  Future<void> getPlaceDirectionDetails(String? placeId, context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(
+        message: "Setting Up Drop-Off, Please Wait",
+      ),
+    );
+    String placeDirectionDetailsUrl =
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$mapKey";
+
+    var responseApi =
+        await RequestAssistant.receiveRequest(placeDirectionDetailsUrl);
+
+    Navigator.pop(context);
+
+    if (responseApi == "Error Occurred, Failed. No Response.") {
+      return;
+    }
+    if (responseApi["status"] == "OK") {
+      Directions directions = Directions();
+      directions.locationName = responseApi["result"]["name"];
+      directions.locationId = placeId;
+      directions.locationLatitude =
+          responseApi["result"]["geometry"]["location"]["lat"];
+      directions.locationLongitude =
+          responseApi["result"]["geometry"]["location"]["lng"];
+
+      // Navigator.pop(context, "obtainedDropOff");
     }
   }
 }
