@@ -43,7 +43,9 @@ class _TripscreenState extends State<Tripscreen> {
             .child('All Ride Requests/${widget.rideRequestId}')
             .once();
         print('Ride Request Data: ${data.snapshot.value}');
-        rideRequest = RideRequest.fromMap(data.snapshot.value);
+        setState(() {
+          rideRequest = RideRequest.fromMap(data.snapshot.value);
+        });
       },
     );
   }
