@@ -9,6 +9,8 @@ class RideRequest {
   final fareAmount;
   final acceptedTime;
   final origin;
+  final pickupDetails;
+  final dropDetails;
   final originAddress;
   final status;
   final time;
@@ -25,6 +27,8 @@ class RideRequest {
     this.driverName,
     this.driverPhone,
     this.fareAmount,
+    this.pickupDetails,
+    this.dropDetails,
     this.origin,
     this.originAddress,
     this.status,
@@ -44,13 +48,15 @@ class RideRequest {
       driverLocation: data['driverLocation'],
       driverName: data['driverName'],
       driverPhone: data['driverPhone'],
-      fareAmount: data['fareAmount'],
+      fareAmount: data['user_cost'],
       origin: data['origin'],
       originAddress: data['originAddress'],
       status: data['status'],
       time: data['time'],
       userName: data['userName'],
       userPhone: data['userPhone'],
+      pickupDetails: data['pickupDetails'],
+      dropDetails: data['dropDetails'],
     );
   }
 }

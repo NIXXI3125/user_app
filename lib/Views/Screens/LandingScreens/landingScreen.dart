@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/providers/landingScreenProvider.dart';
 import 'package:users_app_cracon/Controller/providers/mainScreenProvider.dart';
+import 'package:users_app_cracon/Views/authentication/login_screen.dart';
 import 'package:users_app_cracon/Views/mainScreens/main_screen.dart';
 import 'package:users_app_cracon/models/predicted_placestu.dart';
 
@@ -99,19 +101,25 @@ class _LandingScreenState extends State<LandingScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // Scaffold.of(context).openDrawer();
+                        fAuth.signOut().then((value) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              CupertinoPageRoute(
+                                  builder: (context) => LoginScreen()),
+                              (route) => false);
+                        });
                       },
                       child: Container(
                         height: 50,
                         width: 50,
                         margin: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: const DecorationImage(
-                            image: AssetImage("images/profile.jpg"),
-                            fit: BoxFit.cover,
-                          ),
+                        child: Icon(
+                          Icons.power_settings_new_rounded,
+                          size: 25,
+                          color: Colors.red,
                         ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.red.shade50),
                       ),
                     ),
                   ],

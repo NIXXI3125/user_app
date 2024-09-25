@@ -297,8 +297,8 @@ class _AddressBottomModalSheetState extends State<AddressBottomModalSheet> {
               GestureDetector(
                 onTap: () {
                   if (widget.bottomModalSheetfor == 'pickup') {
-                    if (pickupphone.text.isNotEmpty ||
-                        pickupName.text.isNotEmpty ||
+                    if (pickupphone.text.isNotEmpty &&
+                        pickupName.text.isNotEmpty &&
                         pickupAddress.text.isNotEmpty) {
                       Provider.of<AppInfo>(context, listen: false)
                           .userPickUpDetails(
@@ -327,8 +327,8 @@ class _AddressBottomModalSheetState extends State<AddressBottomModalSheet> {
                     }
                   }
                   if (widget.bottomModalSheetfor == 'drop') {
-                    if (dropphone.text.isNotEmpty ||
-                        dropName.text.isNotEmpty ||
+                    if (dropphone.text.isNotEmpty &&
+                        dropName.text.isNotEmpty &&
                         dropAddress.text.isNotEmpty) {
                       Provider.of<AppInfo>(context, listen: false)
                           .userDropDetails(

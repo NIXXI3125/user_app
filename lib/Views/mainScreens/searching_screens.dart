@@ -16,7 +16,8 @@ class _SearchingScreensState extends State<SearchingScreens> {
     super.initState();
     Future.delayed(Duration.zero, () {
       Provider.of<Searchingscreenprovider>(context, listen: false)
-          .currentonlinedrivers(context, '₹ ${widget.cost}');
+          .currentonlinedrivers(
+              context, '₹ ${widget.cost}', widget.VehicleType!);
     });
   }
 
@@ -34,12 +35,12 @@ class _SearchingScreensState extends State<SearchingScreens> {
     return Scaffold(
       body: Consumer<Searchingscreenprovider>(
           builder: (context, screenprovider, _) {
-        return const Column(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LinearProgressIndicator(),
             Text(
-              'Searching For Drivers .....',
+              screenprovider.text,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

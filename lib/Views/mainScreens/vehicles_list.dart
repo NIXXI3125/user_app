@@ -85,152 +85,175 @@ class _VehiclesListState extends State<VehiclesList> {
 
     return Consumer<Vehicleslistprovider>(
       builder: (context, vehicle, _) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Available Vehicles'),
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                ...List.generate(
-                  vehicle.deliveryvehicleList!.length,
-                  (index) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 5),
-                      leading: Image.network(
-                        vehicle.deliveryvehicleList![index].image,
-                        width: 50,
-                        height: 50,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.error,
-                            color: Colors.red,
-                            size: 30,
-                          );
-                        },
-                      ),
-                      title: Text(vehicle.deliveryvehicleList![index].type),
-                      trailing: Text(
-                        "₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}",
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                    create: (context) =>
-                                        Searchingscreenprovider(),
-                                    child: SearchingScreens(
-                                      VehicleType: vehicle
-                                          .deliveryvehicleList![index].type,
-                                      cost:
-                                          '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
-                                    ),
-                                  )),
-                        );
-                      },
-                    );
-                  },
+        return (vehicle.state == VehicleState.initial ||
+                vehicle.state == VehicleState.loading)
+            ? const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
                 ),
-                ...List.generate(
-                  vehicle.fixedvehicleList!.length,
-                  (index) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 5),
-                      leading: Image.network(
-                        vehicle.fixedvehicleList![index].image,
-                        width: 50,
-                        height: 50,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.error,
-                            color: Colors.red,
-                            size: 30,
-                          );
-                        },
-                      ),
-                      title: Text(vehicle.fixedvehicleList![index].type),
-                      trailing: Text(
-                        "₹ ${vehicle.calculateFareAmountForFixedVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.fixedvehicleList![index])}",
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                    create: (context) =>
-                                        Searchingscreenprovider(),
-                                    child: SearchingScreens(
-                                      VehicleType: vehicle
-                                          .deliveryvehicleList![index].type,
-                                      cost:
-                                          '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
-                                    ),
-                                  )),
-                        );
-                      },
-                    );
-                  },
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  title: const Text('Available Vehicles'),
                 ),
-                ...List.generate(
-                  vehicle.heavyvehicleList!.length,
-                  (index) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 5),
-                      leading: Image.network(
-                        vehicle.heavyvehicleList![index].image,
-                        width: 50,
-                        height: 50,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.error,
-                            color: Colors.red,
-                            size: 30,
-                          );
-                        },
+                body: (vehicle.deliveryvehicleList == null)
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ...List.generate(
+                              vehicle.deliveryvehicleList!.length,
+                              (index) {
+                                return ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  leading: Image.network(
+                                    vehicle.deliveryvehicleList![index].image,
+                                    width: 50,
+                                    height: 50,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                        size: 30,
+                                      );
+                                    },
+                                  ),
+                                  title: Text(
+                                      vehicle.deliveryvehicleList![index].type),
+                                  trailing: Text(
+                                    "₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}",
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChangeNotifierProvider(
+                                                create: (context) =>
+                                                    Searchingscreenprovider(),
+                                                child: SearchingScreens(
+                                                  VehicleType: vehicle
+                                                      .deliveryvehicleList![
+                                                          index]
+                                                      .type,
+                                                  cost:
+                                                      '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                                ),
+                                              )),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            ...List.generate(
+                              vehicle.fixedvehicleList!.length,
+                              (index) {
+                                return ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  leading: Image.network(
+                                    vehicle.fixedvehicleList![index].image,
+                                    width: 50,
+                                    height: 50,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                        size: 30,
+                                      );
+                                    },
+                                  ),
+                                  title: Text(
+                                      vehicle.fixedvehicleList![index].type),
+                                  trailing: Text(
+                                    "₹ ${vehicle.calculateFareAmountForFixedVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.fixedvehicleList![index])}",
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChangeNotifierProvider(
+                                                create: (context) =>
+                                                    Searchingscreenprovider(),
+                                                child: SearchingScreens(
+                                                  VehicleType: vehicle
+                                                      .deliveryvehicleList![
+                                                          index]
+                                                      .type,
+                                                  cost:
+                                                      '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                                ),
+                                              )),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            ...List.generate(
+                              vehicle.heavyvehicleList!.length,
+                              (index) {
+                                return ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  leading: Image.network(
+                                    vehicle.heavyvehicleList![index].image,
+                                    width: 50,
+                                    height: 50,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                        size: 30,
+                                      );
+                                    },
+                                  ),
+                                  title: Text(
+                                      vehicle.heavyvehicleList![index].type),
+                                  trailing: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "₹ ${vehicle.calculateFareAmountForHeavyVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.heavyvehicleList![index])}",
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      const Text(
+                                        "/hr",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChangeNotifierProvider(
+                                                create: (context) =>
+                                                    Searchingscreenprovider(),
+                                                child: SearchingScreens(
+                                                  VehicleType: vehicle
+                                                      .deliveryvehicleList![
+                                                          index]
+                                                      .type,
+                                                  cost:
+                                                      '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                                ),
+                                              )),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                      title: Text(vehicle.heavyvehicleList![index].type),
-                      trailing: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "₹ ${vehicle.calculateFareAmountForHeavyVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.heavyvehicleList![index])}",
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const Text(
-                            "/hr",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                    create: (context) =>
-                                        Searchingscreenprovider(),
-                                    child: SearchingScreens(
-                                      VehicleType: vehicle
-                                          .deliveryvehicleList![index].type,
-                                      cost:
-                                          '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
-                                    ),
-                                  )),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }
