@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/infoHandler/app_info.dart';
 import 'package:users_app_cracon/models/PickupDetailsModel.dart';
 import 'package:users_app_cracon/models/dropDetailModel.dart';
@@ -306,6 +307,10 @@ class _AddressBottomModalSheetState extends State<AddressBottomModalSheet> {
                             name: pickupName.text,
                             phoneNo: pickupphone.text),
                       );
+                      pickupDetails = Pickupdetailsmodel(
+                          address: pickupAddress.text,
+                          name: pickupName.text,
+                          phoneNo: pickupphone.text);
                       Navigator.pop(context, true);
                     } else {
                       print('it is empty');
@@ -332,6 +337,10 @@ class _AddressBottomModalSheetState extends State<AddressBottomModalSheet> {
                             name: dropName.text,
                             phoneNo: dropphone.text),
                       );
+                      dropDetails = Dropdetailsmodel(
+                          address: dropAddress.text,
+                          name: dropName.text,
+                          phoneNo: dropphone.text);
                       Navigator.pop(context, true);
                     } else {
                       print('it is empty');

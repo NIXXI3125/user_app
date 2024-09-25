@@ -122,7 +122,12 @@ class _VehiclesListState extends State<VehiclesList> {
                               builder: (context) => ChangeNotifierProvider(
                                     create: (context) =>
                                         Searchingscreenprovider(),
-                                    child: const SearchingScreens(),
+                                    child: SearchingScreens(
+                                      VehicleType: vehicle
+                                          .deliveryvehicleList![index].type,
+                                      cost:
+                                          '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                    ),
                                   )),
                         );
                       },
@@ -153,14 +158,20 @@ class _VehiclesListState extends State<VehiclesList> {
                         style: const TextStyle(fontSize: 14),
                       ),
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => SelectNearestActiveDriverScreen(
-                        //       vehicleType: vehicles[index]['type'],
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                    create: (context) =>
+                                        Searchingscreenprovider(),
+                                    child: SearchingScreens(
+                                      VehicleType: vehicle
+                                          .deliveryvehicleList![index].type,
+                                      cost:
+                                          '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                    ),
+                                  )),
+                        );
                       },
                     );
                   },
@@ -198,14 +209,20 @@ class _VehiclesListState extends State<VehiclesList> {
                         ],
                       ),
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => SelectNearestActiveDriverScreen(
-                        //       vehicleType: vehicles[index]['type'],
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                    create: (context) =>
+                                        Searchingscreenprovider(),
+                                    child: SearchingScreens(
+                                      VehicleType: vehicle
+                                          .deliveryvehicleList![index].type,
+                                      cost:
+                                          '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                    ),
+                                  )),
+                        );
                       },
                     );
                   },

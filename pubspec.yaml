@@ -49,6 +49,7 @@ dependencies:
   googleapis_auth:
   geocoding:
   google_places_flutter:
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

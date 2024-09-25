@@ -269,42 +269,53 @@ class _MainScreenState extends State<MainScreen> {
     checkIfLocationPermissionAllowed();
   }
 
-  saveRideRequestInformation() {
+  saveRideRequestInformation() async {
     // SAVE RIDE REQUEST INFORMATION
-    referenceRideRequest =
-        FirebaseDatabase.instance.ref().child("All Ride Requests").push();
+    // referenceRideRequest =
+    //     FirebaseDatabase.instance.ref().child("All Ride Requests").push();
 
-    var originLocation =
-        Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
-    var destinationLocation =
-        Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
+    // var originLocation =
+    //     Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
+    // var destinationLocation =
+    //     Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
 
-    Map originLocationMap = {
-      "latitude": originLocation!.locationLatitude.toString(),
-      "longitude": originLocation!.locationLongitude.toString(),
-    };
+    // Map originLocationMap = {
+    //   "latitude": originLocation!.locationLatitude.toString(),
+    //   "longitude": originLocation!.locationLongitude.toString(),
+    // };
 
-    Map destinationLocationMap = {
-      "latitude": destinationLocation!.locationLatitude.toString(),
-      "longitude": destinationLocation!.locationLongitude.toString(),
-    };
+    // Map destinationLocationMap = {
+    //   "latitude": destinationLocation!.locationLatitude.toString(),
+    //   "longitude": destinationLocation!.locationLongitude.toString(),
+    // };
 
-    Map userInformationMap = {
-      "origin": originLocationMap,
-      "destination": destinationLocationMap,
-      "time": DateTime.now().toString(),
-      "userName": userModelCurrentInfo!.name,
-      "userPhone": userModelCurrentInfo!.phone,
-      "originAddress": originLocation.locationName,
-      "destinationAddress": destinationLocation.locationName,
-      "driverId": "waiting",
-    };
+    // Map userInformationMap = {
+    //   "origin": originLocationMap,
+    //   "destination": destinationLocationMap,
+    //   "time": DateTime.now().toString(),
+    //   "userName": userModelCurrentInfo!.name,
+    //   "userPhone": userModelCurrentInfo!.phone,
+    //   "originAddress": originLocation.locationName,
+    //   "destinationAddress": destinationLocation.locationName,
+    //   "driverId": "waiting",
+    // };
 
-    referenceRideRequest!.set(userInformationMap);
+    // referenceRideRequest!.set(userInformationMap);
 
-    onlineNearByAvailableDriversList =
-        GeoFireAssistant.activeNearbyAvailableDriversList;
-    searchNearestOnlineDrivers();
+    // onlineNearByAvailableDriversList =
+    //     GeoFireAssistant.activeNearbyAvailableDriversList;
+    ProgressDialog(
+      message: 'Loading',
+    );
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (c) => ChangeNotifierProvider(
+          create: (context) => Vehicleslistprovider(),
+          child: VehiclesList(),
+        ),
+      ),
+    );
   }
 
   searchNearestOnlineDrivers() async {
