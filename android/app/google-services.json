@@ -30,6 +30,28 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1020996169127:android:443dcc8d2abf711a831a82",
+        "android_client_info": {
+          "package_name": "com.cracon.users_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo7-Qp3wILwxjfmizRSM8MZJqrx_OVNHE"
+        },
+        {
+          "current_key": "AIzaSyA23QEm452hc77OvmRA8hnzmNiTPYnGp5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1020996169127:android:501ea65fe3ed9c26831a82",
         "android_client_info": {
           "package_name": "com.cracon.users_app_cracon"

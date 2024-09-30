@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +10,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
+import 'package:users_app_cracon/Controller/providers/landingScreenProvider.dart';
 import 'package:users_app_cracon/Controller/providers/mainScreenProvider.dart';
+import 'package:users_app_cracon/Views/Screens/LandingScreens/landingScreen.dart';
 import 'package:users_app_cracon/Views/mainScreens/main_screen.dart';
 import 'package:users_app_cracon/models/rideDetailsModel.dart';
 
@@ -26,12 +31,16 @@ class _TripscreenState extends State<Tripscreen> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-
+  String rideId = '';
   Set<Polyline> polyLineSet = {};
   Set<Marker> markersSet = {};
   Set<Circle> circleSet = {};
   String? userEmail;
   RideRequest? rideRequest;
+  String rideStatus = '';
+  String previousData = '';
+  StreamSubscription subscription =
+      FirebaseDatabase.instance.ref().child("dummy").onValue.listen((event) {});
   @override
   void initState() {
     // TODO: implement initState
@@ -44,16 +53,72 @@ class _TripscreenState extends State<Tripscreen> {
             .once();
         print('Ride Request Data: ${data.snapshot.value}');
         setState(() {
+          rideId = widget.rideRequestId;
           rideRequest = RideRequest.fromMap(data.snapshot.value);
+        });
+        fbase.child('All Ride Requests/rideId/status').onValue.listen((value) {
+          setState(() {
+            rideStatus = value.snapshot.value.toString();
+            print('Ride Status: ${rideStatus}');
+          });
         });
       },
     );
+  }
+
+  getRideStatus() {
+    subscription =
+        fbase.child('All Ride Requests/$rideId/status').onValue.listen(
+      (value) {
+        String newData = value.snapshot.value.toString();
+        if (previousData == '' || previousData != newData) {
+          previousData = newData;
+          setState(() {
+            rideStatus = value.snapshot.value.toString();
+            print('Ride Status: ${rideStatus}');
+          });
+          if (rideStatus == 'ended') {
+            subscription.cancel();
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text('Your Trip is Ended!'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(
+                                builder: (context) => ChangeNotifierProvider(
+                                    create: (context) =>
+                                        Landingscreenprovider(),
+                                    child: LandingScreen())),
+                            (route) => false);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    subscription.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
+    getRideStatus();
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushAndRemoveUntil(context,
