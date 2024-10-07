@@ -42,11 +42,9 @@ class Searchingscreenprovider extends ChangeNotifier {
           drivers,
         );
       }).toList();
-      print('Online Drivers: $onlineDrivers');
     }
     for (int i = 0; i < onlineDrivers.length; i++) {
       var element = onlineDrivers[i];
-
       driverswithDistance.add({
         'id': element.driverId,
         'distance': distanceBetweenUserandDriverinKms(
@@ -56,7 +54,7 @@ class Searchingscreenprovider extends ChangeNotifier {
       });
 
       DatabaseEvent driver = await dataofdriver.child(element.driverId!).once();
-      driversData.add(DriverDetails.fromJson(driver.snapshot.value));
+      driversData.add(DriverDetails.fromJson(driver.snapshot));
       notifyListeners();
     }
 

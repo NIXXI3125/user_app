@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:users_app_cracon/models/VehicleDetails.dart';
 
 class DriverDetails {
@@ -12,19 +13,20 @@ class DriverDetails {
   });
 
   // You can also include methods for serialization if needed
-  factory DriverDetails.fromJson(var json) {
-    if (json['car_details'] != null) {
+  factory DriverDetails.fromJson(DataSnapshot json) {
+    if ((json.value as dynamic)['car_details'] != null) {
       return DriverDetails(
-        vehicleDetails: VehicleDetails.fromJson(json['car_details']),
-        name: json['name'] ?? '',
-        id: json['id'] ?? '',
+        vehicleDetails:
+            VehicleDetails.fromJson((json.value as dynamic)['car_details']),
+        name: (json.value as dynamic)['name'] ?? '',
+        id: (json.value as dynamic)['id'] ?? '',
       );
     } else {
       return DriverDetails(
         vehicleDetails:
             VehicleDetails(carColor: '', carModel: '', carNumber: '', type: ''),
-        name: json['name'] ?? '',
-        id: json['id'] ?? '',
+        name: (json.value as dynamic)['name'] ?? '',
+        id: (json.value as dynamic)['id'] ?? '',
       );
     }
   }
