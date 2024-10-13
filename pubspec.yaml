@@ -51,6 +51,8 @@ dependencies:
   google_places_flutter:
   string_similarity:
   url_launcher: ^6.3.0
+  
+  
 
 dev_dependencies:
   flutter_test:

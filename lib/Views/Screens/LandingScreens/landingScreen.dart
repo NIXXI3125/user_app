@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/providers/landingScreenProvider.dart';
 import 'package:users_app_cracon/Controller/providers/mainScreenProvider.dart';
+import 'package:users_app_cracon/Views/Screens/profileDrawer.dart';
 import 'package:users_app_cracon/Views/authentication/login_screen.dart';
 import 'package:users_app_cracon/Views/mainScreens/main_screen.dart';
 import 'package:users_app_cracon/models/predicted_placestu.dart';
@@ -42,6 +43,8 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   String bannerlink = '';
+  String heavy = '';
+  String water = '';
   checkIfLocationPermissionAllowed() async {
     _locationPermission = await Geolocator.requestPermission();
 
@@ -52,6 +55,18 @@ class _LandingScreenState extends State<LandingScreen> {
     fbase.child('ExtData/book_here').once().then((value) {
       setState(() {
         bannerlink = value.snapshot.value.toString();
+        print(bannerlink);
+      });
+    });
+    fbase.child('ExtData/heavy').once().then((value) {
+      setState(() {
+        heavy = value.snapshot.value.toString();
+        print(bannerlink);
+      });
+    });
+    fbase.child('ExtData/water').once().then((value) {
+      setState(() {
+        water = value.snapshot.value.toString();
         print(bannerlink);
       });
     });
@@ -109,25 +124,24 @@ class _LandingScreenState extends State<LandingScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        fAuth.signOut().then((value) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              CupertinoPageRoute(
-                                  builder: (context) => LoginScreen()),
-                              (route) => false);
-                        });
+                        Navigator.of(context).push(CupertinoPageRoute(
+                          builder: (context) {
+                            return Profiledrawer();
+                          },
+                        ));
                       },
                       child: Container(
                         height: 50,
                         width: 50,
                         margin: const EdgeInsets.all(5),
                         child: Icon(
-                          Icons.power_settings_new_rounded,
+                          Icons.person,
                           size: 25,
-                          color: Colors.red,
+                          color: Colors.green,
                         ),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: Colors.red.shade50),
+                            color: Colors.green.shade50),
                       ),
                     ),
                   ],
@@ -212,8 +226,115 @@ class _LandingScreenState extends State<LandingScreen> {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: 170,
+                    width: 190,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                              create: (context) => Mainscreenprovider(),
+                              child: MainScreen(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(15),
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            bannerlink,
+                            height: 170,
+                            width: 170,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(child: CircularProgressIndicator());
+                            },
+                            fit: BoxFit.cover,
+                            // loadingBuilder:
+                            //     (context, child, loadingProgress) {
+                            //   return Center(
+                            //       child: CircularProgressIndicator());
+                            // },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 170,
+                    width: 190,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                              create: (context) => Mainscreenprovider(),
+                              child: MainScreen(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(15),
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            bannerlink,
+                            height: 170,
+                            width: 170,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(child: CircularProgressIndicator());
+                            },
+                            fit: BoxFit.cover,
+                            // loadingBuilder:
+                            //     (context, child, loadingProgress) {
+                            //   return Center(
+                            //       child: CircularProgressIndicator());
+                            // },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
-                height: 220,
+                height: 170,
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -240,7 +361,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),

@@ -1,15 +1,18 @@
-
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:users_app_cracon/Controller/infoHandler/app_info.dart';
 import 'package:users_app_cracon/Views/splashScreen/splash_screen.dart';
 
-
-void main() async
-{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: FirebaseOptions(apiKey: 'AIzaSyA23QEm452hc77OvmRA8hnzmNiTPYnGp5g', appId: '1:1020996169127:android:a0400462840d9a68831a82', messagingSenderId: '1020996169127', projectId: 'user555-3d756'));
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: 'AIzaSyA23QEm452hc77OvmRA8hnzmNiTPYnGp5g',
+          appId: '1:1020996169127:android:a0400462840d9a68831a82',
+          messagingSenderId: '1020996169127',
+          projectId: 'user555-3d756'));
 
   runApp(
     MyApp(
@@ -28,16 +31,12 @@ void main() async
   );
 }
 
-
-
-class MyApp extends StatefulWidget
-{
+class MyApp extends StatefulWidget {
   final Widget? child;
 
   MyApp({this.child});
 
-  static void restartApp(BuildContext context)
-  {
+  static void restartApp(BuildContext context) {
     context.findAncestorStateOfType<_MyAppState>()!.restartApp();
   }
 
@@ -45,12 +44,9 @@ class MyApp extends StatefulWidget
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp>
-{
+class _MyAppState extends State<MyApp> {
   Key key = UniqueKey();
-
-  void restartApp()
-  {
+  void restartApp() {
     setState(() {
       key = UniqueKey();
     });
@@ -64,6 +60,3 @@ class _MyAppState extends State<MyApp>
     );
   }
 }
-
-
-

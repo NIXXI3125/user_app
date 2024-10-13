@@ -19,12 +19,8 @@ import 'package:users_app_cracon/Controller/providers/mainScreenProvider.dart';
 import 'package:users_app_cracon/Controller/providers/vehiclesListProvider.dart';
 import 'package:users_app_cracon/Views/mainScreens/search_places_screen.dart';
 import 'package:users_app_cracon/Views/mainScreens/search_places_screen_tu.dart';
-import 'package:users_app_cracon/Views/mainScreens/select_nearest_active_driver_screen.dart';
 import 'package:users_app_cracon/Views/mainScreens/vehicles_list.dart';
-import 'package:users_app_cracon/Views/widgets/BottomModalSheet.dart';
-import 'package:users_app_cracon/Views/widgets/dottedLine.dart';
 import 'package:users_app_cracon/models/active_nearby_available_drivers.dart';
-import 'package:users_app_cracon/Views/widgets/my_drawer.dart';
 import 'package:users_app_cracon/Views/widgets/progress_dialog.dart';
 
 class MainScreen extends StatefulWidget {
@@ -72,166 +68,41 @@ class _MainScreenState extends State<MainScreen> {
   blackThemeGoogleMap() {
     newGoogleMapController!.setMapStyle('''
                     [
-                      {
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#f5f5f5"
-                          }
-                        ]
-                      },
-                      {
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#616161"
-                          }
-                        ]
-                      },
-                      {
-                        "elementType": "labels.text.stroke",
-                        "stylers": [
-                          {
-                            "color": "#f5f5f5"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "administrative.locality",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#757575"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "poi",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#757575"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "poi.park",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#e5e5e5"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "poi.park",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#9e9e9e"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#ffffff"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road",
-                        "elementType": "geometry.stroke",
-                        "stylers": [
-                          {
-                            "color": "#e0e0e0"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#9e9e9e"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road.highway",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#dadada"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road.highway",
-                        "elementType": "geometry.stroke",
-                        "stylers": [
-                          {
-                            "color": "#c9c9c9"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road.highway",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#616161"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "transit",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#e5e5e5"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "transit.station",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#757575"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "water",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#c9c9c9"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "water",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#9e9e9e"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "water",
-                        "elementType": "labels.text.stroke",
-                        "stylers": [
-                          {
-                            "color": "#ffffff"
-                          }
-                        ]
-                      }
-                    ]
+  {
+    "featureType": "poi",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.business",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }
+]
                 ''');
   }
 
@@ -428,18 +299,6 @@ class _MainScreenState extends State<MainScreen> {
           Consumer<Mainscreenprovider>(builder: (context, screenprovider, _) {
         return Scaffold(
           key: sKey,
-          drawer: Container(
-            width: 265,
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Colors.black,
-              ),
-              child: MyDrawer(
-                name: userName,
-                email: userEmail,
-              ),
-            ),
-          ),
           appBar: PreferredSize(
             preferredSize: Size(_width, _height * 0.3),
             child: Container(
@@ -458,7 +317,21 @@ class _MainScreenState extends State<MainScreen> {
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
                       var responseFromSearchScreenTu = Navigator.push(
@@ -670,9 +543,9 @@ class _MainScreenState extends State<MainScreen> {
                 width: _width,
                 child: GoogleMap(
                   mapType: MapType.normal,
-                  myLocationEnabled: true,
+                  myLocationEnabled: false,
                   zoomGesturesEnabled: true,
-                  zoomControlsEnabled: true,
+                  zoomControlsEnabled: false,
                   initialCameraPosition: _kGooglePlex,
                   polylines: polyLineSet,
                   markers: markersSet,
