@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -262,11 +265,11 @@ class _LandingScreenState extends State<LandingScreen> {
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
                           ),
-                          child: Image.network(
-                            bannerlink,
+                          child: CachedNetworkImage(
+                            imageUrl: bannerlink,
                             height: 170,
                             width: 170,
-                            errorBuilder: (context, error, stackTrace) {
+                            placeholder: (context, url) {
                               return Center(child: CircularProgressIndicator());
                             },
                             fit: BoxFit.cover,
@@ -313,11 +316,11 @@ class _LandingScreenState extends State<LandingScreen> {
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
                           ),
-                          child: Image.network(
-                            bannerlink,
+                          child: CachedNetworkImage(
+                            imageUrl: bannerlink,
                             height: 170,
                             width: 170,
-                            errorBuilder: (context, error, stackTrace) {
+                            placeholder: (context, url) {
                               return Center(child: CircularProgressIndicator());
                             },
                             fit: BoxFit.cover,
@@ -365,11 +368,12 @@ class _LandingScreenState extends State<LandingScreen> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                      child: Image.network(
-                        bannerlink,
-                        errorBuilder: (context, error, stackTrace) {
+                      child: CachedNetworkImage(
+                        imageUrl: bannerlink,
+                        placeholder: (context, url) {
                           return Center(child: CircularProgressIndicator());
                         },
+
                         fit: BoxFit.contain,
                         // loadingBuilder:
                         //     (context, child, loadingProgress) {
