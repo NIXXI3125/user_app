@@ -232,156 +232,189 @@ class _LandingScreenState extends State<LandingScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 170,
-                    width: 190,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => ChangeNotifierProvider(
-                              create: (context) => Mainscreenprovider(),
-                              child: MainScreen(),
-                            ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => ChangeNotifierProvider(
+                            create: (context) => Mainscreenprovider(),
+                            child: MainScreen(),
                           ),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(15),
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4,
-                              spreadRadius: 2,
-                            ),
-                          ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            spreadRadius: 2,
                           ),
-                          child: CachedNetworkImage(
-                            imageUrl: bannerlink,
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
                             height: 170,
                             width: 170,
-                            placeholder: (context, url) {
-                              return Center(child: CircularProgressIndicator());
-                            },
-                            fit: BoxFit.cover,
-                            // loadingBuilder:
-                            //     (context, child, loadingProgress) {
-                            //   return Center(
-                            //       child: CircularProgressIndicator());
-                            // },
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: heavy,
+                                height: 170,
+                                width: 170,
+                                fit: BoxFit.cover,
+                                // loadingBuilder:
+                                //     (context, child, loadingProgress) {
+                                //   return Center(
+                                //       child: CircularProgressIndicator());
+                                // },
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            "Heavy Vehicles",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 170,
-                    width: 190,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => ChangeNotifierProvider(
-                              create: (context) => Mainscreenprovider(),
-                              child: MainScreen(),
-                            ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => ChangeNotifierProvider(
+                            create: (context) => Mainscreenprovider(),
+                            child: MainScreen(),
                           ),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(15),
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4,
-                              spreadRadius: 2,
-                            ),
-                          ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            spreadRadius: 2,
                           ),
-                          child: CachedNetworkImage(
-                            imageUrl: bannerlink,
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
                             height: 170,
                             width: 170,
-                            placeholder: (context, url) {
-                              return Center(child: CircularProgressIndicator());
-                            },
-                            fit: BoxFit.cover,
-                            // loadingBuilder:
-                            //     (context, child, loadingProgress) {
-                            //   return Center(
-                            //       child: CircularProgressIndicator());
-                            // },
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: water,
+                                height: 170,
+                                width: 170,
+                                fit: BoxFit.cover,
+                                // loadingBuilder:
+                                //     (context, child, loadingProgress) {
+                                //   return Center(
+                                //       child: CircularProgressIndicator());
+                                // },
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            "Water Tanker",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 170,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CupertinoPageRoute(
-                        builder: (context) => ChangeNotifierProvider(
-                          create: (context) => Mainscreenprovider(),
-                          child: MainScreen(),
-                        ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => ChangeNotifierProvider(
+                        create: (context) => Mainscreenprovider(),
+                        child: MainScreen(),
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(15),
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          spreadRadius: 2,
-                        ),
-                      ],
                     ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
+                  );
+                },
+                child: Container(
+                  height: 200,
+                  width: double.infinity * 0.9,
+                  margin: const EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        spreadRadius: 2,
                       ),
-                      child: CachedNetworkImage(
-                        imageUrl: bannerlink,
-                        placeholder: (context, url) {
-                          return Center(child: CircularProgressIndicator());
-                        },
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 170,
+                        width: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: bannerlink,
 
-                        fit: BoxFit.contain,
-                        // loadingBuilder:
-                        //     (context, child, loadingProgress) {
-                        //   return Center(
-                        //       child: CircularProgressIndicator());
-                        // },
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+
+                            fit: BoxFit.fitHeight,
+                            // loadingBuilder:
+                            //     (context, child, loadingProgress) {
+                            //   return Center(
+                            //       child: CircularProgressIndicator());
+                            // },
+                          ),
+                        ),
                       ),
-                    ),
+                      Text(
+                        "Delivery Vehicles",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
