@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:users_app_cracon/Controller/assistants/assistant_methods.dart';
@@ -25,6 +26,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
       var underConstruction =
           await fbase.child('ExtData').child('userconstruction').once();
       print('Result' + underConstruction.snapshot.value.toString());
+      fbase.child('ExtData').child('phone').get().then((DataSnapshot? snap) {
+        customer_care = snap!.value.toString() ?? '+91 1234567890';
+        print('Customer Care: $customer_care');
+      });
       if (fAuth.currentUser != null) {
         if (underConstruction.snapshot.value as bool) {
           currentFirebaseUser = fAuth.currentUser;

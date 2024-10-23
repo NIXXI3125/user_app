@@ -65,13 +65,10 @@ class PushNotification {
     final Map<String, dynamic> message = {
       'message': {
         'token': deviceRegistrationToken,
-        // 'notification':
-        // {
-        //   'title': "NET TRIP REQUEST from $userName",
-        //   'body' : "PickUp Location: $pickUpAddress \n DropOff Location: $dropOffDestinationAddress"
-        // },
         'data': {
           'rideRequestId': userRideRequestId,
+          'originAddress': pickUpAddress,
+          'destinationAddress': dropOffDestinationAddress,
         }
       }
     };

@@ -41,7 +41,7 @@ class _TripscreenState extends State<Tripscreen> {
   List<LatLng> polyLinePositionCoordinates = [];
   GoogleMapController? newTripGoogleMapController;
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
-  StreamSubscription<Position>? streamSubscriptionDriverLivePosition;
+  StreamSubscription? streamSubscriptionDriverLivePosition;
   CameraPosition newDriverCamera = _kGooglePlex;
   Position? driverCurrentPosition;
   String? userEmail;
@@ -163,64 +163,69 @@ class _TripscreenState extends State<Tripscreen> {
     });
   }
 
-// getDriversLocationUpdatesAtRealTime() {
-//     LatLng oldLatLng = LatLng(0, 0);
+  getDriversLocationUpdatesAtRealTime() {
+    LatLng oldLatLng = LatLng(0, 0);
+    print('Driver ID: ${rideRequest!.driverId.toString()}');
+    streamSubscriptionDriverLivePosition = fbase
+        .child('activeDrivers/${rideRequest!.driverId.toString()}')
+        .onValue
+        .listen((driverPosition) {
+      print('Driver Position: ${driverPosition.snapshot.value}');
+    });
+    //   driverCurrentPosition = driverPosition.snapshot.value;
+    //   newDriverCamera =
+    //       CameraPosition(target: LatLng(position.latitude, position.longitude));
+    //   Distance = Geolocator.distanceBetween(
+    //       position.latitude,
+    //       position.longitude,
+    //       widget.userRideRequestDetails!.originLatLng!.latitude,
+    //       widget.userRideRequestDetails!.originLatLng!.longitude);
+    //   print('distance:' + Distance.toString());
+    //   LatLng latLngLiveDriverPosition = LatLng(
+    //     onlineDriverCurrentPosition!.latitude,
+    //     onlineDriverCurrentPosition!.longitude,
+    //   );
 
-//     streamSubscriptionDriverLivePosition =
-//         Geolocator.getPositionStream().listen((Position position) {
-//       driverCurrentPosition = position;
-//       newDriverCamera =
-//           CameraPosition(target: LatLng(position.latitude, position.longitude));
-//       Distance = Geolocator.distanceBetween(
-//           position.latitude,
-//           position.longitude,
-//           widget.userRideRequestDetails!.originLatLng!.latitude,
-//           widget.userRideRequestDetails!.originLatLng!.longitude);
-//       print('distance:' + Distance.toString());
-//       LatLng latLngLiveDriverPosition = LatLng(
-//         onlineDriverCurrentPosition!.latitude,
-//         onlineDriverCurrentPosition!.longitude,
-//       );
+    //   Marker animatingMarker = Marker(
+    //     markerId: const MarkerId("AnimatedMarker"),
+    //     position: latLngLiveDriverPosition,
+    //     icon: iconAnimatedMarker!,
+    //     infoWindow: const InfoWindow(title: "This is your Position"),
+    //   );
 
-//       Marker animatingMarker = Marker(
-//         markerId: const MarkerId("AnimatedMarker"),
-//         position: latLngLiveDriverPosition,
-//         icon: iconAnimatedMarker!,
-//         infoWindow: const InfoWindow(title: "This is your Position"),
-//       );
+    //   setState(() {
+    //     CameraPosition cameraPosition =
+    //         CameraPosition(target: latLngLiveDriverPosition, zoom: 16);
+    //     newTripGoogleMapController!
+    //         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-//       setState(() {
-//         CameraPosition cameraPosition =
-//             CameraPosition(target: latLngLiveDriverPosition, zoom: 16);
-//         newTripGoogleMapController!
-//             .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    //     setOfMarkers.removeWhere(
+    //         (element) => element.markerId.value == "AnimatedMarker");
+    //     setOfMarkers.add(animatingMarker);
+    //   });
 
-//         setOfMarkers.removeWhere(
-//             (element) => element.markerId.value == "AnimatedMarker");
-//         setOfMarkers.add(animatingMarker);
-//       });
+    //   oldLatLng = latLngLiveDriverPosition;
+    //   updateDurationTimeAtRealTime();
 
-//       oldLatLng = latLngLiveDriverPosition;
-//       updateDurationTimeAtRealTime();
-
-//       //updating driver location at real time in Database
-//       Map driverLatLngDataMap = {
-//         "latitude": onlineDriverCurrentPosition!.latitude.toString(),
-//         "longitude": onlineDriverCurrentPosition!.longitude.toString(),
-//       };
-//       FirebaseDatabase.instance
-//           .ref()
-//           .child("All Ride Requests")
-//           .child(widget.userRideRequestDetails!.rideRequestId!)
-//           .child("driverLocation")
-//           .set(driverLatLngDataMap);
-//     });
-//   }
+    //   //updating driver location at real time in Database
+    //   Map driverLatLngDataMap = {
+    //     "latitude": onlineDriverCurrentPosition!.latitude.toString(),
+    //     "longitude": onlineDriverCurrentPosition!.longitude.toString(),
+    //   };
+    //   FirebaseDatabase.instance
+    //       .ref()
+    //       .child("All Ride Requests")
+    //       .child(widget.userRideRequestDetails!.rideRequestId!)
+    //       .child("driverLocation")
+    //       .set(driverLatLngDataMap);
+    // });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // getDriversLocationUpdatesAtRealTime();
     Future.delayed(
       const Duration(seconds: 1),
       () async {
@@ -304,6 +309,18 @@ class _TripscreenState extends State<Tripscreen> {
         return false;
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text('Help & Support'),
+          onPressed: () async {
+            await launchUrl(
+              Uri(
+                scheme: 'tel',
+                path: customer_care,
+              ),
+            );
+          },
+          icon: Icon(Icons.headset_mic_rounded),
+        ),
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -370,7 +387,7 @@ class _TripscreenState extends State<Tripscreen> {
                         "stylers": [
                           {
                             "color": "#263c3f"
-                          }
+                          }x
                         ]
                       },
                       {
@@ -501,7 +518,7 @@ class _TripscreenState extends State<Tripscreen> {
                 drawPolyLineFromOriginToDestination(
                     userPickUpLatLng, userDestinationLatLng);
 
-                // getDriversLocationUpdatesAtRealTime();
+                getDriversLocationUpdatesAtRealTime();
               },
             ),
             Container(

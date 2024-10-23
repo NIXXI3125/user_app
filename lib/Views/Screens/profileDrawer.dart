@@ -12,15 +12,33 @@ class Profiledrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Profilelisttiledata> tilesData = [
-      Profilelisttiledata(
-        title: 'Ride History',
-        leadingIcon: Icons.history,
-        onTap: () {
-          Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
-            return Ridehistory();
-          }));
-        },
-      ),
+      // Profilelisttiledata(
+      //   title: 'Edit Profile',
+      //   leadingIcon: Icons.person,
+      //   onTap: () {
+      //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
+      //       return Ridehistory();
+      //     }));
+      //   },
+      // ),
+      // Profilelisttiledata(
+      //   title: 'Ride History',
+      //   leadingIcon: Icons.history,
+      //   onTap: () {
+      //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
+      //       return Ridehistory();
+      //     }));
+      //   },
+      // ),
+      // Profilelisttiledata(
+      //   title: 'Refer & Earn',
+      //   leadingIcon: Icons.payments_rounded,
+      //   onTap: () {
+      //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
+      //       return Ridehistory();
+      //     }));
+      //   },
+      // ),
       Profilelisttiledata(
         title: 'Privacy Policy',
         leadingIcon: Icons.privacy_tip,
@@ -32,6 +50,18 @@ class Profiledrawer extends StatelessWidget {
               path: 'privacy-policy',
             ),
             mode: LaunchMode.inAppBrowserView,
+          );
+        },
+      ),
+      Profilelisttiledata(
+        title: 'Help & Support',
+        leadingIcon: Icons.headset_mic_rounded,
+        onTap: () async {
+          await launchUrl(
+            Uri(
+              scheme: 'tel',
+              path: '+91$customer_care',
+            ),
           );
         },
       ),

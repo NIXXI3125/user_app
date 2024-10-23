@@ -8,6 +8,7 @@ import '../../models/user_model.dart';
 
 final FirebaseAuth fAuth = FirebaseAuth.instance;
 DatabaseReference fbase = FirebaseDatabase.instance.ref();
+String customer_care = '+91 1234567890';
 User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
 Position? userPickupLocation;

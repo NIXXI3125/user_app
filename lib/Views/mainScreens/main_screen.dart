@@ -33,8 +33,8 @@ class _MainScreenState extends State<MainScreen> {
   GoogleMapController? newGoogleMapController;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    target: LatLng(28.4148834, 77.30969),
+    zoom: 12.25,
   );
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
