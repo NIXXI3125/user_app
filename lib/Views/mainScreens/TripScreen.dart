@@ -164,6 +164,7 @@ class _TripscreenState extends State<Tripscreen> {
   }
 
   getDriversLocationUpdatesAtRealTime() {
+    print('Driver ID: ${rideRequest!.driverId.toString()}');
     LatLng oldLatLng = LatLng(0, 0);
     print('Driver ID: ${rideRequest!.driverId.toString()}');
     streamSubscriptionDriverLivePosition = fbase
@@ -225,7 +226,6 @@ class _TripscreenState extends State<Tripscreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getDriversLocationUpdatesAtRealTime();
     Future.delayed(
       const Duration(seconds: 1),
       () async {
@@ -243,6 +243,7 @@ class _TripscreenState extends State<Tripscreen> {
             print('Ride Status: ${rideStatus}');
           });
         });
+        getDriversLocationUpdatesAtRealTime();
       },
     );
   }

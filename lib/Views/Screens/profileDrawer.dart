@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Views/Screens/RideHistory/rideHistory.dart';
+import 'package:users_app_cracon/Views/Screens/helpAndSupport.dart';
 import 'package:users_app_cracon/Views/authentication/login_screen.dart';
 import 'package:users_app_cracon/models/profileListTileData.dart';
 
@@ -12,15 +13,15 @@ class Profiledrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Profilelisttiledata> tilesData = [
-      // Profilelisttiledata(
-      //   title: 'Edit Profile',
-      //   leadingIcon: Icons.person,
-      //   onTap: () {
-      //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
-      //       return Ridehistory();
-      //     }));
-      //   },
-      // ),
+      Profilelisttiledata(
+        title: 'Edit Profile',
+        leadingIcon: Icons.person,
+        onTap: () {
+          // Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
+          //   return ();
+          // }));
+        },
+      ),
       // Profilelisttiledata(
       //   title: 'Ride History',
       //   leadingIcon: Icons.history,
@@ -57,12 +58,9 @@ class Profiledrawer extends StatelessWidget {
         title: 'Help & Support',
         leadingIcon: Icons.headset_mic_rounded,
         onTap: () async {
-          await launchUrl(
-            Uri(
-              scheme: 'tel',
-              path: '+91$customer_care',
-            ),
-          );
+          Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
+            return Helpandsupport();
+          }));
         },
       ),
       Profilelisttiledata(

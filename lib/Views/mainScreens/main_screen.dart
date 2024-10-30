@@ -536,29 +536,45 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: _height * 0.64,
+                height: 300,
                 width: _width,
-                child: GoogleMap(
-                  mapType: MapType.normal,
-                  myLocationEnabled: false,
-                  zoomGesturesEnabled: true,
-                  zoomControlsEnabled: false,
-                  initialCameraPosition: _kGooglePlex,
-                  polylines: polyLineSet,
-                  markers: markersSet,
-                  circles: circleSet,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controllerGoogleMap.complete(controller);
-                    newGoogleMapController = controller;
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white10,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    myLocationEnabled: false,
+                    zoomGesturesEnabled: true,
+                    zoomControlsEnabled: false,
+                    initialCameraPosition: _kGooglePlex,
+                    polylines: polyLineSet,
+                    markers: markersSet,
+                    circles: circleSet,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controllerGoogleMap.complete(controller);
+                      newGoogleMapController = controller;
 
-                    //for black theme google map
-                    blackThemeGoogleMap();
+                      //for black theme google map
+                      blackThemeGoogleMap();
 
-                    locateUserPosition();
-                  },
+                      locateUserPosition();
+                    },
+                  ),
                 ),
               ),
             ],

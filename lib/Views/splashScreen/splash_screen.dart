@@ -7,6 +7,7 @@ import 'package:users_app_cracon/Controller/providers/landingScreenProvider.dart
 import 'package:users_app_cracon/Views/Screens/LandingScreens/landingScreen.dart';
 import 'package:users_app_cracon/Views/authentication/login_screen.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
+import 'package:users_app_cracon/Views/authentication/phoneAuthScreen.dart';
 import 'package:users_app_cracon/Views/mainScreens/main_screen.dart';
 import 'package:users_app_cracon/Views/mainScreens/underConstructionScreen.dart';
 
@@ -49,7 +50,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         }
       } else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (c) => LoginScreen()));
+            context, MaterialPageRoute(builder: (c) => PhoneLoginScreen()));
       }
     });
   }
@@ -75,7 +76,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 height: 10,
               ),
               const Text(
-                "Low Fare , Your Care",
+                "Low Fare,Your Care",
                 style: TextStyle(
                     fontSize: 10,
                     color: Colors.black,

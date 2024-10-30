@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:users_app_cracon/Views/authentication/otpScreen.dart';
 
 import '../../Controller/global/global.dart';
 import '../splashScreen/splash_screen.dart';
@@ -26,8 +28,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Fluttertoast.showToast(msg: "Email address is not Valid.");
     } else if (phoneTextEditingController.text.isEmpty) {
       Fluttertoast.showToast(msg: "Phone Number is required.");
-    } else if (passwordTextEditingController.text.length < 6) {
-      Fluttertoast.showToast(msg: "Password must be atleast 6 Characters.");
     } else {
       saveUserInfoNow();
     }
@@ -43,37 +43,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
           );
         });
 
-    final User? firebaseUser = (await fAuth
-            .createUserWithEmailAndPassword(
-      email: emailTextEditingController.text.trim(),
-      password: passwordTextEditingController.text.trim(),
+    await fAuth
+        .verifyPhoneNumber(
+      phoneNumber: "+91${phoneTextEditingController.text.trim()}",
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Auto Retrieval Timeout.");
+      },
+      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
+      verificationFailed: (FirebaseAuthException authException) {},
+      codeSent: (verificationId, forceResendingToken) {
+        print("Verification ID: $verificationId");
+        Fluttertoast.showToast(msg: "Verification Code has been sent.");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => otpScreen(
+              phone: phoneTextEditingController.text.trim(),
+              verificationId: verificationId,
+              forSignup: true,
+              emailController: emailTextEditingController.text.trim(),
+              nameController: nameTextEditingController.text.trim(),
+            ),
+          ),
+        );
+      },
     )
-            .catchError((msg) {
+        .catchError((msg) {
       Navigator.pop(context);
       Fluttertoast.showToast(msg: "Error: " + msg.toString());
-    }))
-        .user;
-
-    if (firebaseUser != null) {
-      Map userMap = {
-        "id": firebaseUser.uid,
-        "name": nameTextEditingController.text.trim(),
-        "email": emailTextEditingController.text.trim(),
-        "phone": phoneTextEditingController.text.trim(),
-      };
-
-      DatabaseReference reference =
-          FirebaseDatabase.instance.ref().child("users");
-      reference.child(firebaseUser.uid).set(userMap);
-
-      currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(msg: "Account has been Created.");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => MySplashScreen()));
-    } else {
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Account has not been Created.");
-    }
+    });
   }
 
   @override
@@ -149,37 +148,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextField(
                 controller: phoneTextEditingController,
                 keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                ],
                 style: const TextStyle(color: Colors.grey),
                 decoration: const InputDecoration(
                   labelText: "Phone",
                   hintText: "Phone",
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              TextField(
-                controller: passwordTextEditingController,
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                style: const TextStyle(color: Colors.grey),
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  hintText: "Password",
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),

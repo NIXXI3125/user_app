@@ -430,70 +430,70 @@ class _LandingScreenState extends State<LandingScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Services",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "View",
-                        style: TextStyle(
-                          color: Color(0xFFFF914D),
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 120,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: vehicles.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 100,
-                      margin: const EdgeInsets.only(left: 15),
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                        color: bgColors[index],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            "images/${vehicles[index]}.png",
-                            height: 80,
-                            width: 80,
-                          ),
-                          Text(
-                            vehicles[index],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       const Text(
+              //         "Services",
+              //         style: TextStyle(
+              //           fontSize: 22,
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //       ),
+              //       TextButton(
+              //         onPressed: () {},
+              //         child: const Text(
+              //           "View",
+              //           style: TextStyle(
+              //             color: Color(0xFFFF914D),
+              //             fontSize: 17,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 120,
+              //   child: ListView.builder(
+              //     scrollDirection: Axis.horizontal,
+              //     shrinkWrap: true,
+              //     itemCount: vehicles.length,
+              //     itemBuilder: (context, index) {
+              //       return Container(
+              //         width: 100,
+              //         margin: const EdgeInsets.only(left: 15),
+              //         padding: const EdgeInsets.symmetric(vertical: 5),
+              //         decoration: BoxDecoration(
+              //           color: bgColors[index],
+              //           borderRadius: BorderRadius.circular(10),
+              //         ),
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //           children: [
+              //             Image.asset(
+              //               "images/${vehicles[index]}.png",
+              //               height: 80,
+              //               width: 80,
+              //             ),
+              //             Text(
+              //               vehicles[index],
+              //               style: const TextStyle(
+              //                 fontWeight: FontWeight.w500,
+              //                 fontSize: 15,
+              //                 color: Colors.black87,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
             ],
           );
         }),
