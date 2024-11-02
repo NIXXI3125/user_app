@@ -2,26 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:users_app_cracon/Views/splashScreen/splash_screen.dart';
 import '../../Controller/global/global.dart';
 
-
-
-class MyDrawer extends StatefulWidget
-{
+class MyDrawer extends StatefulWidget {
   String? name;
   String? email;
 
-  MyDrawer({this.name, this.email});
+  MyDrawer({super.key, this.name, this.email});
 
   @override
   _MyDrawerState createState() => _MyDrawerState();
 }
 
-
-
-class _MyDrawerState extends State<MyDrawer>
-{
+class _MyDrawerState extends State<MyDrawer> {
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
@@ -38,9 +31,9 @@ class _MyDrawerState extends State<MyDrawer>
                     size: 80,
                     color: Colors.white,
                   ),
-
-                  const SizedBox(width: 16,),
-
+                  const SizedBox(
+                    width: 16,
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -52,7 +45,9 @@ class _MyDrawerState extends State<MyDrawer>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Text(
                         widget.email.toString(),
                         style: const TextStyle(
@@ -67,74 +62,70 @@ class _MyDrawerState extends State<MyDrawer>
             ),
           ),
 
-          const  SizedBox(height: 12.0,),
+          const SizedBox(
+            height: 12.0,
+          ),
 
           //drawer body
           GestureDetector(
-            onTap: ()
-            {
-
-            },
+            onTap: () {},
             child: const ListTile(
-              leading: Icon(Icons.history, color: Colors.black87,),
+              leading: Icon(
+                Icons.history,
+                color: Colors.black87,
+              ),
               title: Text(
                 "History",
-                style: TextStyle(
-                  color: Colors.black87
-                ),
+                style: TextStyle(color: Colors.black87),
               ),
             ),
           ),
 
           GestureDetector(
-            onTap: ()
-            {
-
-            },
+            onTap: () {},
             child: const ListTile(
-              leading: Icon(Icons.person, color: Colors.black87,),
+              leading: Icon(
+                Icons.person,
+                color: Colors.black87,
+              ),
               title: Text(
-                "Visit Profile",
-                style: TextStyle(
-                    color: Colors.black87
-                ),
+                "Edit Profile",
+                style: TextStyle(color: Colors.black87),
               ),
             ),
           ),
 
           GestureDetector(
-            onTap: ()
-            {
-
-            },
+            onTap: () {},
             child: const ListTile(
-              leading: Icon(Icons.info, color: Colors.black87,),
+              leading: Icon(
+                Icons.info,
+                color: Colors.black87,
+              ),
               title: Text(
                 "About",
-                style: TextStyle(
-                    color: Colors.black87
-                ),
+                style: TextStyle(color: Colors.black87),
               ),
             ),
           ),
 
           GestureDetector(
-            onTap: ()
-            {
+            onTap: () {
               fAuth.signOut();
-              Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (c) => const MySplashScreen()));
             },
             child: const ListTile(
-              leading: Icon(Icons.logout, color: Colors.black87,),
+              leading: Icon(
+                Icons.logout,
+                color: Colors.black87,
+              ),
               title: Text(
                 "Sign Out",
-                style: TextStyle(
-                    color: Colors.black87
-                ),
+                style: TextStyle(color: Colors.black87),
               ),
             ),
           ),
-
         ],
       ),
     );

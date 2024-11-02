@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/providers/searchingScreenProvider.dart';
 import 'package:users_app_cracon/Controller/providers/vehiclesListProvider.dart';
+import 'package:users_app_cracon/Views/mainScreens/Tripsummaryscreen.dart';
 import 'package:users_app_cracon/Views/mainScreens/searching_screens.dart';
 
 class VehiclesList extends StatefulWidget {
@@ -14,247 +15,162 @@ class VehiclesList extends StatefulWidget {
 }
 
 class _VehiclesListState extends State<VehiclesList> {
-  List<Map> vehicles = [
-    {
-      'name': 'Bike',
-      'type': 'bike',
-      'image': 'android/images/Bike.png',
-    },
-    {
-      'name': '3-wheeler',
-      'type': '3wheel',
-      'image': 'android/images/3_wheeler.png',
-    },
-    {
-      'name': 'Tata-Ace',
-      'type': 'tataace',
-      'image': 'android/images/Tata-Ace.png',
-    },
-    {
-      'name': 'Eeco',
-      'type': 'eeco',
-      'image': 'android/images/eeco.png',
-    },
-    {
-      'name': 'Pickup',
-      'type': 'pickup',
-      'image': 'android/images/pickup.png',
-    },
-    {
-      'name': 'Hydra',
-      'type': 'hydra',
-      'image': 'android/images/Hydra.png',
-    },
-    {
-      'name': 'Fork-Lift',
-      'type': 'forklift',
-      'image': 'android/images/Fork-Lift.png',
-    },
-    {
-      'name': 'Excavator',
-      'type': 'Excavator',
-      'image': 'android/images/Excavator.png',
-    },
-    {
-      'name': 'Water-Tanker',
-      'type': 'waterTanker',
-      'image': 'android/images/Water-Tanker.png',
-    },
-    {
-      'name': 'Tractor Trolley',
-      'type': 'tractorTrolley',
-      'image': 'android/images/Tractor-Trolley.png',
-    },
-  ];
-
   @override
   void initState() {
-    Provider.of<Vehicleslistprovider>(context, listen: false)
-        .getHeavyVehiclesCost();
-    Provider.of<Vehicleslistprovider>(context, listen: false)
-        .getDeliveryVehiclesCost();
-    Provider.of<Vehicleslistprovider>(context, listen: false)
-        .getFixedVehiclesCost();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      final provider =
+          Provider.of<Vehicleslistprovider>(context, listen: false);
+      provider.getAllVehiclesCost();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
     return Consumer<Vehicleslistprovider>(
       builder: (context, vehicle, _) {
-        return (vehicle.state == VehicleState.initial ||
-                vehicle.state == VehicleState.loading)
-            ? const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : Scaffold(
+        return (vehicle.state == VehicleState.loaded)
+            ? Scaffold(
                 appBar: AppBar(
                   title: const Text('Available Vehicles'),
                 ),
-                body: (vehicle.deliveryvehicleList == null)
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ...List.generate(
-                              vehicle.deliveryvehicleList!.length,
-                              (index) {
-                                return ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 5),
-                                  leading: Image.network(
-                                    vehicle.deliveryvehicleList![index].image,
-                                    width: 50,
-                                    height: 50,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                        size: 30,
-                                      );
-                                    },
-                                  ),
-                                  title: Text(
-                                      vehicle.deliveryvehicleList![index].type),
-                                  trailing: Text(
-                                    "₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}",
-                                    style: const TextStyle(fontSize: 14),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ChangeNotifierProvider(
-                                                create: (context) =>
-                                                    Searchingscreenprovider(),
-                                                child: SearchingScreens(
-                                                  VehicleType: vehicle
-                                                      .deliveryvehicleList![
-                                                          index]
-                                                      .type,
-                                                  cost:
-                                                      '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
-                                                ),
-                                              )),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            ...List.generate(
-                              vehicle.fixedvehicleList!.length,
-                              (index) {
-                                return ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 5),
-                                  leading: Image.network(
-                                    vehicle.fixedvehicleList![index].image,
-                                    width: 50,
-                                    height: 50,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                        size: 30,
-                                      );
-                                    },
-                                  ),
-                                  title: Text(
-                                      vehicle.fixedvehicleList![index].type),
-                                  trailing: Text(
-                                    "₹ ${vehicle.calculateFareAmountForFixedVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.fixedvehicleList![index])}",
-                                    style: const TextStyle(fontSize: 14),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ChangeNotifierProvider(
-                                                create: (context) =>
-                                                    Searchingscreenprovider(),
-                                                child: SearchingScreens(
-                                                  VehicleType: vehicle
-                                                      .deliveryvehicleList![
-                                                          index]
-                                                      .type,
-                                                  cost:
-                                                      '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
-                                                ),
-                                              )),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            ...List.generate(
-                              vehicle.heavyvehicleList!.length,
-                              (index) {
-                                return ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 5),
-                                  leading: Image.network(
-                                    vehicle.heavyvehicleList![index].image,
-                                    width: 50,
-                                    height: 50,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                        size: 30,
-                                      );
-                                    },
-                                  ),
-                                  title: Text(
-                                      vehicle.heavyvehicleList![index].type),
-                                  trailing: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "₹ ${vehicle.calculateFareAmountForHeavyVehicles(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.heavyvehicleList![index])}",
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                      const Text(
-                                        "/hr",
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ChangeNotifierProvider(
-                                                create: (context) =>
-                                                    Searchingscreenprovider(),
-                                                child: SearchingScreens(
-                                                  VehicleType: vehicle
-                                                      .deliveryvehicleList![
-                                                          index]
-                                                      .type,
-                                                  cost:
-                                                      '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
-                                                ),
-                                              )),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                body: ListView(
+                  children: [
+                    if (vehicle.deliveryvehicleList != null)
+                      ...List.generate(
+                        vehicle.deliveryvehicleList!.length,
+                        (index) {
+                          return buildVehicleTile(
+                            image: vehicle.deliveryvehicleList![index].image,
+                            type: vehicle.deliveryvehicleList![index].type
+                                .split('_')
+                                .map((word) =>
+                                    word[0].toUpperCase() + word.substring(1))
+                                .join(' '),
+                            cost:
+                                '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Tripsummaryscreen(
+                                          VehicleType: vehicle
+                                              .deliveryvehicleList![index].type,
+                                          vehicleImage: vehicle
+                                              .deliveryvehicleList![index]
+                                              .image,
+                                          cost:
+                                              '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
+                                        )),
+                              );
+                            },
+                          );
+                        },
                       ),
+                    if (vehicle.fixedvehicleList != null)
+                      ...List.generate(
+                        vehicle.fixedvehicleList!.length,
+                        (index) {
+                          return buildVehicleTile(
+                            image: vehicle.fixedvehicleList![index].image,
+                            type: vehicle.fixedvehicleList![index].type
+                                .split('_')
+                                .map((word) =>
+                                    word[0].toUpperCase() + word.substring(1))
+                                .join(' '),
+                            cost: '₹ ${vehicle.fixedvehicleList![index].Price}',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Tripsummaryscreen(
+                                          VehicleType: vehicle
+                                              .fixedvehicleList![index].type,
+                                          cost:
+                                              '₹ ${vehicle.fixedvehicleList![index].Price}',
+                                          vehicleImage: vehicle
+                                              .fixedvehicleList![index].image,
+                                        )),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    if (vehicle.heavyvehicleList != null)
+                      ...List.generate(
+                        vehicle.heavyvehicleList!.length,
+                        (index) {
+                          return buildVehicleTile(
+                            image: vehicle.heavyvehicleList![index].image,
+                            type: vehicle.heavyvehicleList![index].type
+                                .split('_')
+                                .map((word) =>
+                                    word[0].toUpperCase() + word.substring(1))
+                                .join(' '),
+                            cost:
+                                '₹ ${vehicle.heavyvehicleList![index].basePrice}',
+                            isHeavy: true,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Tripsummaryscreen(
+                                          VehicleType: vehicle
+                                              .heavyvehicleList![index].type,
+                                          cost:
+                                              '₹ ${vehicle.heavyvehicleList![index].basePrice}',
+                                          vehicleImage: vehicle
+                                              .heavyvehicleList![index].image,
+                                        )),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                  ],
+                ),
+              )
+            : const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
       },
     );
   }
+}
+
+Widget buildVehicleTile({
+  required String image,
+  required String type,
+  required String cost,
+  required VoidCallback onTap,
+  bool isHeavy = false,
+}) {
+  return ListTile(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+    leading: Image.network(
+      image,
+      width: 50,
+      height: 50,
+      errorBuilder: (context, error, stackTrace) {
+        return const Icon(
+          Icons.error,
+          color: Colors.red,
+          size: 30,
+        );
+      },
+    ),
+    title: Text(type),
+    trailing: isHeavy
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(cost, style: const TextStyle(fontSize: 14)),
+              const Text("/hr", style: TextStyle(fontSize: 12)),
+            ],
+          )
+        : Text(cost, style: const TextStyle(fontSize: 14)),
+    onTap: onTap,
+  );
 }

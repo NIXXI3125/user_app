@@ -29,11 +29,20 @@ class Vehicleslistprovider extends ChangeNotifier {
   List<HeavyVehicleType>? heavyvehicleList;
   List<DeliveryVehicle>? deliveryvehicleList;
   List<FixedVehicleType>? fixedvehicleList;
+
+  Future<void> getAllVehiclesCost() async {
+    state = VehicleState.loading;
+    getHeavyVehiclesCost();
+    getDeliveryVehiclesCost();
+    getFixedVehiclesCost();
+    state = VehicleState.loaded;
+    notifyListeners();
+  }
+
   Future<void> getHeavyVehiclesCost() async {
     state = VehicleState.loading;
     DatabaseEvent vehiclesData = await fbase.child('Heavy_vehicles').once();
     if (vehiclesData.snapshot.value != null) {
-      print('Vehicles Data' + vehiclesData.snapshot.value.toString());
       Map<dynamic, dynamic> data =
           vehiclesData.snapshot.value as Map<dynamic, dynamic>;
       heavyvehicleList = data.entries.map((entry) {
@@ -41,19 +50,15 @@ class Vehicleslistprovider extends ChangeNotifier {
             Map<String, dynamic>.from(entry.value);
         return HeavyVehicleType.fromJson(vehicleData);
       }).toList();
-      print(heavyvehicleList);
       state = VehicleState.loaded;
       notifyListeners();
     }
-    // print('Vehicle Rates' + vehicleRates.toString());
   }
 
   Future<void> getDeliveryVehiclesCost() async {
     state = VehicleState.loading;
     DatabaseEvent vehiclesData = await fbase.child('Globals').once();
-    print('Vehicles Data' + vehiclesData.snapshot.value.toString());
     if (vehiclesData.snapshot.value != null) {
-      print('Vehicles Data' + vehiclesData.snapshot.value.toString());
       Map<dynamic, dynamic> data =
           vehiclesData.snapshot.value as Map<dynamic, dynamic>;
       deliveryvehicleList = data.entries.map((entry) {
@@ -65,15 +70,12 @@ class Vehicleslistprovider extends ChangeNotifier {
       state = VehicleState.loaded;
       notifyListeners();
     }
-    // print('Vehicle Rates' + vehicleRates.toString());
   }
 
   Future<void> getFixedVehiclesCost() async {
-    state = VehicleState.loaded;
+    state = VehicleState.loading;
     DatabaseEvent vehiclesData = await fbase.child('fixed_vehicles').once();
-    print('Vehicles Data' + vehiclesData.snapshot.value.toString());
     if (vehiclesData.snapshot.value != null) {
-      print('Vehicles Data' + vehiclesData.snapshot.value.toString());
       Map<dynamic, dynamic> data =
           vehiclesData.snapshot.value as Map<dynamic, dynamic>;
       fixedvehicleList = data.entries.map((entry) {
@@ -81,7 +83,6 @@ class Vehicleslistprovider extends ChangeNotifier {
             Map<String, dynamic>.from(entry.value);
         return FixedVehicleType.fromJson(vehicleData);
       }).toList();
-      print(fixedvehicleList);
       state = VehicleState.loaded;
       notifyListeners();
     }
@@ -93,43 +94,28 @@ class Vehicleslistprovider extends ChangeNotifier {
     costState = CostState.loading;
     double totalDistanceinkm =
         (directionDetailsInfo.distance_value! / 1000).truncateToDouble();
-    print('total distance is: $totalDistanceinkm');
     double basekms = vehicle.baseDistance;
     double baseprice = vehicle.basePrice;
     double priceperkm = vehicle.perKm;
+    double cost = 0.0;
     if (totalDistanceinkm <= basekms) {
-      costState = CostState.loaded;
-      notifyListeners();
-      return baseprice;
-    }
-    if (totalDistanceinkm > basekms) {
-      double differencekms = (totalDistanceinkm - basekms);
-      double cost = baseprice + (differencekms * priceperkm);
-      costState = CostState.loaded;
-      notifyListeners();
-      return cost;
+      cost = baseprice;
     } else {
-      costState = CostState.loaded;
-      notifyListeners();
-      return 0.0;
+      double differencekms = (totalDistanceinkm - basekms);
+      cost = baseprice + (differencekms * priceperkm);
     }
+    return cost;
   }
 
   double calculateFareAmountForHeavyVehicles(
       {required DirectionDetailsInfo directionDetailsInfo,
       required HeavyVehicleType vehicle}) {
-    costState = CostState.loading;
-    costState = CostState.loaded;
-    notifyListeners();
     return vehicle.hourlyPrice;
   }
 
   double calculateFareAmountForFixedVehicles(
       {required DirectionDetailsInfo directionDetailsInfo,
       required FixedVehicleType vehicle}) {
-    costState = CostState.loading;
-    costState = CostState.loaded;
-    notifyListeners();
     return vehicle.Price;
   }
 }

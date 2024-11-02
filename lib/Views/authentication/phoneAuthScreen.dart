@@ -118,7 +118,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Image.asset(
-                    "android/images/logo1.png",
+                    "android/images/logo.png",
                     height: 250,
                   ),
                 ),

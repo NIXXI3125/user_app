@@ -33,6 +33,7 @@ class _SearchingScreensState extends State<SearchingScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Consumer<Searchingscreenprovider>(
           builder: (context, screenprovider, _) {
         return Column(

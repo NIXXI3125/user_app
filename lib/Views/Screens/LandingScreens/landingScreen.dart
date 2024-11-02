@@ -54,19 +54,16 @@ class _LandingScreenState extends State<LandingScreen> {
     fbase.child('ExtData/book_here').once().then((value) {
       setState(() {
         bannerlink = value.snapshot.value.toString();
-        print(bannerlink);
       });
     });
     fbase.child('ExtData/heavy').once().then((value) {
       setState(() {
         heavy = value.snapshot.value.toString();
-        print(bannerlink);
       });
     });
     fbase.child('ExtData/water').once().then((value) {
       setState(() {
         water = value.snapshot.value.toString();
-        print(bannerlink);
       });
     });
   }
