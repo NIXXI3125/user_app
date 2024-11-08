@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
+import 'package:users_app_cracon/Controller/providers/rideHistoryProvider.dart';
 import 'package:users_app_cracon/Views/Screens/RideHistory/rideHistory.dart';
 import 'package:users_app_cracon/Views/Screens/helpAndSupport.dart';
 import 'package:users_app_cracon/Views/authentication/login_screen.dart';
@@ -22,15 +24,20 @@ class Profiledrawer extends StatelessWidget {
               CupertinoPageRoute(builder: (context) => const Editprofile()));
         },
       ),
-      // Profilelisttiledata(
-      //   title: 'Ride History',
-      //   leadingIcon: Icons.history,
-      //   onTap: () {
-      //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
-      //       return Ridehistory();
-      //     }));
-      //   },
-      // ),
+      Profilelisttiledata(
+        title: 'Ride History',
+        leadingIcon: Icons.history,
+        onTap: () {
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => ChangeNotifierProvider(
+                create: (context) => Ridehistoryprovider(),
+                child: Ridehistory(),
+              ),
+            ),
+          );
+        },
+      ),
       // Profilelisttiledata(
       //   title: 'Refer & Earn',
       //   leadingIcon: Icons.payments_rounded,

@@ -59,6 +59,15 @@ class _VehiclesListState extends State<VehiclesList> {
                                           vehicleImage: vehicle
                                               .deliveryvehicleList![index]
                                               .image,
+                                          loading_capacity: vehicle
+                                              .deliveryvehicleList![index]
+                                              .loading_capacity,
+                                          unloading_time: vehicle
+                                              .deliveryvehicleList![index]
+                                              .unloading_time,
+                                          waiting_charge: vehicle
+                                              .deliveryvehicleList![index]
+                                              .waiting_charge,
                                           cost:
                                               '₹ ${vehicle.calculateFareAmountFromOriginToDestination(directionDetailsInfo: tripDirectionDetailsInfo!, vehicle: vehicle.deliveryvehicleList![index])}',
                                         )),

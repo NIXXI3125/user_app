@@ -1,54 +1,85 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
+import 'package:provider/provider.dart';
+import 'package:users_app_cracon/Controller/providers/rideHistoryProvider.dart';
 import 'package:users_app_cracon/models/orderHistoryModel.dart';
+import 'package:users_app_cracon/models/tripsHistoryModel.dart';
 
-class Ridehistory extends StatelessWidget {
+class Ridehistory extends StatefulWidget {
   Ridehistory({super.key});
-  List<Orderhistorymodel> orders = [
-    Orderhistorymodel(
-        origin: 'Faridabad',
-        DateofOrder: DateTime(2002),
-        cost: '100',
-        destination: 'Ballabgarh',
-        vehicleType: 'Tata-Ace')
-  ];
+
+  @override
+  State<Ridehistory> createState() => _RidehistoryState();
+}
+
+class _RidehistoryState extends State<Ridehistory> {
+  List<TripsHistoryModel> orders = [];
+  initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<Ridehistoryprovider>(context, listen: false).listClear();
+      Provider.of<Ridehistoryprovider>(context, listen: false).listRides();
+      orders = Provider.of<Ridehistoryprovider>(context, listen: false).rides;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: _height * 0.2,
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            bottom: const PreferredSize(
-              child: Text(
-                'Ride History',
-                style: TextStyle(
-                  fontSize: 35,
-                  color: Colors.white,
+    return Consumer<Ridehistoryprovider>(
+      builder: (context, rideHistoryProvider, _) {
+        return (rideHistoryProvider.state == rideHistoryState.loaded)
+            ? Scaffold(
+                body: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      expandedHeight: _height * 0.2,
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      bottom: const PreferredSize(
+                        child: Text(
+                          'Ride History',
+                          style: TextStyle(
+                            fontSize: 35,
+                            color: Colors.white,
+                          ),
+                        ),
+                        preferredSize: Size(0, 100),
+                      ),
+                    ),
+                    (orders.isEmpty)
+                        ? const SliverFillRemaining(
+                            child: Center(
+                              child: Text(
+                                'No Rides Yet',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                          )
+                        :
+
+                    SliverList.builder(
+                      itemCount: orders.length,
+                      itemBuilder: (context, index) => rideHistoryTile(
+                        context: context,
+                        DateofOrder: DateTime.parse(  orders[index].acceptedTime ?? ''),
+                        destination: orders[index].destinationAddress ?? '',
+                        origin: orders[index].originAddress ?? '',
+                        cost: orders[index].fareAmount.toString(),
+                        vehicleType: ''
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              preferredSize: Size(0, 100),
-            ),
-          ),
-          SliverList.builder(
-            itemCount: orders.length,
-            itemBuilder: (context, index) => rideHistoryTile(
-              context: context,
-              DateofOrder: orders[index].DateofOrder,
-              destination: orders[index].destination,
-              origin: orders[index].origin,
-              vehicleType: orders[index].vehicleType,
-              cost: orders[index].cost,
-            ),
-          ),
-        ],
-      ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              );
+      },
     );
   }
 }

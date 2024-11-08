@@ -8,6 +8,28 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1020996169127:android:8cb9c01c084ab2f1831a82",
+        "android_client_info": {
+          "package_name": "com.cracon.cracon_buddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo7-Qp3wILwxjfmizRSM8MZJqrx_OVNHE"
+        },
+        {
+          "current_key": "AIzaSyA23QEm452hc77OvmRA8hnzmNiTPYnGp5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1020996169127:android:5f1da4bfcae03b0d831a82",
         "android_client_info": {
           "package_name": "com.cracon.drivers_app"

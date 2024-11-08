@@ -42,7 +42,7 @@ class _SearchingScreensState extends State<SearchingScreens> {
             LinearProgressIndicator(),
             Text(
               screenprovider.text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),

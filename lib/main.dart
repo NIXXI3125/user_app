@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:provider/provider.dart';
 import 'package:users_app_cracon/Controller/infoHandler/app_info.dart';
 import 'package:users_app_cracon/Views/splashScreen/splash_screen.dart';
@@ -13,6 +14,9 @@ void main() async {
           appId: '1:1020996169127:android:a0400462840d9a68831a82',
           messagingSenderId: '1020996169127',
           projectId: 'user555-3d756'));
+  FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
+  );
 
   runApp(
     MyApp(

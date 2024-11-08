@@ -149,6 +149,8 @@ class Searchingscreenprovider extends ChangeNotifier {
     };
     referenceRideRequest =
         FirebaseDatabase.instance.ref().child("All Ride Requests").push();
+
+    
     referenceRideRequest!.set(userInformationMap);
     if (finalList.isEmpty) {
       Timer(Duration(seconds: 30), () {
@@ -157,6 +159,15 @@ class Searchingscreenprovider extends ChangeNotifier {
       });
     }
     finalList.forEach((element) {
+      FirebaseDatabase.instance
+        .ref()
+        .child("users")
+        .child(fAuth.currentUser!.uid)
+        .child("rides")
+        .child(referenceRideRequest!.key.toString())
+        .set(true).then((value) {
+          print("Ride Request Added to User's Account");
+        });
       sendNotificationtoDriver(chosenDriverId: element, context: context);
     });
     notifyListeners();

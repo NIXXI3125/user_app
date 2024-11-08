@@ -53,6 +53,7 @@ dependencies:
   url_launcher: ^6.3.0
   cached_network_image:
   pinput:
+  firebase_app_check:
 
 dev_dependencies:
   flutter_test:
