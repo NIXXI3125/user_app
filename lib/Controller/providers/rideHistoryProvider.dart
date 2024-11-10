@@ -10,34 +10,40 @@ enum rideHistoryState {
   error,
 }
 
-class Ridehistoryprovider extends ChangeNotifier{
+class Ridehistoryprovider extends ChangeNotifier {
   rideHistoryState state = rideHistoryState.initial;
   List<String> idList = [];
   List<TripsHistoryModel> rides = [];
+
   listRides() async {
     state = rideHistoryState.loading;
     notifyListeners();
     try {
-      FirebaseDatabase.instance.ref().child('users/$userID/rides').once().then((DatabaseEvent snapshot) {
+      await FirebaseDatabase.instance
+          .ref()
+          .child('users/$userID/rides')
+          .once()
+          .then((DatabaseEvent snapshot) {
         if (snapshot.snapshot.value != null) {
-          print(snapshot.snapshot.value);
           final data = snapshot.snapshot.value as Map<dynamic, dynamic>;
           if (data != null) {
-            data.forEach((key, value) {
-              idList.add(key.toString());
-            });
+            idList = data.keys.cast<String>().toList();
           }
-          idList.forEach((element) {
-            FirebaseDatabase.instance.ref().child('All Ride Requests/$element').once().then((DatabaseEvent snapshot) {
-              if (snapshot.snapshot.value != null) {
+        }});
+        for(String id in idList){
+          await FirebaseDatabase.instance
+              .ref()
+              .child('All Ride Requests/$id')
+              .once()
+              .then((DatabaseEvent snapshot) {
+            if (snapshot.snapshot.value != null) {
               final data = snapshot.snapshot.value as Map<dynamic, dynamic>;
               if (data != null) {
                 rides.add(TripsHistoryModel.fromJson(data));
-              }}
-            });
-          }); 
+              }
+            }
+          });
         }
-      });
       state = rideHistoryState.loaded;
     } catch (e) {
       state = rideHistoryState.error;

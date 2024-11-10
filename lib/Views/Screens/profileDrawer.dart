@@ -7,6 +7,7 @@ import 'package:users_app_cracon/Controller/providers/rideHistoryProvider.dart';
 import 'package:users_app_cracon/Views/Screens/RideHistory/rideHistory.dart';
 import 'package:users_app_cracon/Views/Screens/helpAndSupport.dart';
 import 'package:users_app_cracon/Views/authentication/login_screen.dart';
+import 'package:users_app_cracon/Views/authentication/phoneAuthScreen.dart';
 import 'package:users_app_cracon/Views/widgets/editProfile.dart';
 import 'package:users_app_cracon/models/profileListTileData.dart';
 
@@ -76,7 +77,7 @@ class Profiledrawer extends StatelessWidget {
           onTap: () {
             fAuth.signOut();
             Navigator.of(context).pushAndRemoveUntil(
-                CupertinoPageRoute(builder: (context) => LoginScreen()),
+                CupertinoPageRoute(builder: (context) => PhoneLoginScreen()),
                 (route) => false);
           },
           iconColor: Colors.red),

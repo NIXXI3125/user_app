@@ -22,13 +22,14 @@ class _RidehistoryState extends State<Ridehistory> {
     });
   }
 
-
+  @override
   @override
   Widget build(BuildContext context) {
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
+    final double _height = MediaQuery.of(context).size.height;
+    final double _width = MediaQuery.of(context).size.width;
     return Consumer<Ridehistoryprovider>(
-      builder: (context, rideHistoryProvider, _) {
+      builder: (BuildContext context, Ridehistoryprovider rideHistoryProvider,
+          Widget? child) {
         return (rideHistoryProvider.state == rideHistoryState.loaded)
             ? Scaffold(
                 body: CustomScrollView(
@@ -48,7 +49,7 @@ class _RidehistoryState extends State<Ridehistory> {
                         preferredSize: Size(0, 100),
                       ),
                     ),
-                    (orders.isEmpty)
+                    (rideHistoryProvider.rides.isEmpty)
                         ? const SliverFillRemaining(
                             child: Center(
                               child: Text(
@@ -60,24 +61,25 @@ class _RidehistoryState extends State<Ridehistory> {
                               ),
                             ),
                           )
-                        :
-
-                    SliverList.builder(
-                      itemCount: orders.length,
-                      itemBuilder: (context, index) => rideHistoryTile(
-                        context: context,
-                        DateofOrder: DateTime.parse(  orders[index].acceptedTime ?? ''),
-                        destination: orders[index].destinationAddress ?? '',
-                        origin: orders[index].originAddress ?? '',
-                        cost: orders[index].fareAmount.toString(),
-                        vehicleType: ''
-                      ),
-                    ),
+                        : SliverList.builder(
+                            itemCount: rideHistoryProvider.rides.length,
+                            itemBuilder: (context, index) => rideHistoryTile(
+                                context: context,
+                                DateofOrder:
+                                    DateTime.parse(orders[index].time ?? ''),
+                                destination:
+                                    orders[index].destinationAddress ?? '',
+                                origin: orders[index].originAddress ?? '',
+                                cost: orders[index].fareAmount.toString(),
+                                vehicleType: ''),
+                          ),
                   ],
                 ),
               )
-            : const Center(
-                child: CircularProgressIndicator(),
+            : Scaffold(
+                body: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
       },
     );
@@ -90,7 +92,7 @@ Widget rideHistoryTile({
   required String destination,
   required String origin,
   required String vehicleType,
-  required String cost,
+  required String? cost,
 }) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -193,7 +195,7 @@ Widget rideHistoryTile({
               ),
               const Spacer(),
               Text(
-                cost,
+                cost != 'null' ? '\Rs. $cost' : 'Cancelled',
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

@@ -273,17 +273,13 @@ class _LandingScreenState extends State<LandingScreen> {
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                     ),
-                                    child: CachedNetworkImage(
-                                      imageUrl: heavy,
+                                    child: Image.asset(
+                                      "assets/heavyVehicles.png",
+                                      fit: BoxFit.cover,
                                       height: 170,
                                       width: 170,
-                                      fit: BoxFit.cover,
-                                      // loadingBuilder:
-                                      //     (context, child, loadingProgress) {
-                                      //   return Center(
-                                      //       child: CircularProgressIndicator());
-                                      // },
-                                    ),
+                                      alignment: Alignment.center,
+                                    )
                                   ),
                                 ),
                                 Text(
@@ -332,17 +328,14 @@ class _LandingScreenState extends State<LandingScreen> {
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                     ),
-                                    child: CachedNetworkImage(
-                                      imageUrl: water,
+                                    child: Image.asset(
+                                      "assets/waterTanker.jpeg",
+                                      fit: BoxFit.cover,
                                       height: 170,
                                       width: 170,
-                                      fit: BoxFit.cover,
-                                      // loadingBuilder:
-                                      //     (context, child, loadingProgress) {
-                                      //   return Center(
-                                      //       child: CircularProgressIndicator());
-                                      // },
-                                    ),
+                                      alignment: Alignment.center,
+
+                                    )
                                   ),
                                 ),
                                 Text(
@@ -395,22 +388,13 @@ class _LandingScreenState extends State<LandingScreen> {
                                   topLeft: Radius.circular(10),
                                   topRight: Radius.circular(10),
                                 ),
-                                child: CachedNetworkImage(
-                                  imageUrl: bannerlink,
-
-                                  placeholder: (context, url) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
-
+                                child: Image.asset(
+                                  "assets/deliveryVehicles.png",
                                   fit: BoxFit.fitHeight,
-                                  // loadingBuilder:
-                                  //     (context, child, loadingProgress) {
-                                  //   return Center(
-                                  //       child: CircularProgressIndicator());
-                                  // },
-                                ),
+                                  height: 170,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                )
                               ),
                             ),
                             Text(

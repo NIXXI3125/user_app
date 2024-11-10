@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
+import 'package:users_app_cracon/Views/authentication/login_screen.dart';
 import 'package:users_app_cracon/Views/authentication/otpScreen.dart';
 import 'package:users_app_cracon/Views/authentication/signup_screen.dart';
 import 'package:users_app_cracon/Views/widgets/progress_dialog.dart';
@@ -172,6 +173,55 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Divider(
+                        color: textcolor,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "OR",
+                        style: TextStyle(
+                          color: textcolor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Divider(
+                        color: textcolor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (c) => LoginScreen()),
+                          (route) => false);
+                    },
+                    icon: Icon(
+                      Icons.mail,
+                      color: primary,
+                      size: 30,
                     ),
                   ),
                 ),

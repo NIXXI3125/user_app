@@ -3,7 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:users_app_cracon/Views/authentication/forgot_password_screen.dart';
+import 'package:users_app_cracon/Views/authentication/phoneAuthScreen.dart';
 import 'package:users_app_cracon/Views/authentication/signup_screen.dart';
+import 'package:users_app_cracon/constants.dart';
 
 import '../../Controller/global/global.dart';
 import '../splashScreen/splash_screen.dart';
@@ -153,31 +155,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextButton(
-              child: const Text(
-                "Forgot Password?",
-                style: TextStyle(color: Colors.grey),
-              ),
-              onPressed: () {
-                if (emailTextEditingController.text.isNotEmpty) {
-                  fAuth.sendPasswordResetEmail(
-                      email: emailTextEditingController.text.trim());
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          "Check Your Email Inbox. We have sent a link to reset your password"),
-                    ),
-                  );
-                } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (c) => ForgotPasswordScreen()));
-                }
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: const Text(
+                    "Forgot Password?",
+                    style: TextStyle(color: primary),
+                  ),
+                  onPressed: () {
+                    if (emailTextEditingController.text.isNotEmpty) {
+                      fAuth.sendPasswordResetEmail(
+                          email: emailTextEditingController.text.trim());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              "Check Your Email Inbox. We have sent a link to reset your password"),
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => ForgotPasswordScreen()));
+                    }
+                  },
+                ),
+              ],
             ),
             const SizedBox(
               height: 20,
@@ -187,26 +191,91 @@ class _LoginScreenState extends State<LoginScreen> {
                 validateForm();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightGreenAccent,
+                backgroundColor: hoverColor,
               ),
               child: const Text(
                 "Login",
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: Colors.white,
                   fontSize: 18,
                 ),
               ),
             ),
+            const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Divider(
+                        color: textcolor,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "OR",
+                        style: TextStyle(
+                          color: textcolor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Divider(
+                        color: textcolor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (c) => PhoneLoginScreen()),
+                          (route) => false);
+                    },
+                    icon: Icon(
+                      Icons.phone,
+                      color: primary,
+                      size: 30,
+                    ),
+                  ),
+                ),
             TextButton(
-              child: const Text(
-                "Do not have an Account? SignUp Here",
-                style: TextStyle(color: Colors.grey),
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (c) => SignUpScreen()));
-              },
-            ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Do not have an Account? ",
+                        style: TextStyle(
+                          color: textcolor,
+                        ),
+                      ),
+                      Text(
+                        "SignUp Here",
+                        style: TextStyle(
+                            color: primary,
+                            decoration: TextDecoration.underline,
+                            decorationColor: primary),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (c) => SignUpScreen()),
+                        (route) => false);
+                  },
+                ),
           ],
         ),
       ),
