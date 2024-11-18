@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:users_app_cracon/Controller/assistants/request_assistant.dart';
+import 'package:users_app_cracon/Controller/global/global.dart';
 import 'package:users_app_cracon/Controller/global/map_key.dart';
 import 'package:users_app_cracon/models/predicted_places.dart';
 import 'package:users_app_cracon/Views/widgets/place_prediction_tile.dart';
@@ -11,6 +12,7 @@ class SearchPlacesScreen extends StatefulWidget {
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   List<PredictedPlaces> placesPredictedList = [];
+  List<PredictedPlaces> savedList = [];
 
   void findPlaceAutoCompleteSearch(String inputText) async {
     if (inputText.length > 1) //2 or more than 2 input characters
@@ -38,6 +40,33 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         });
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      await fbase
+          .child("users")
+          .child(userID)
+          .child("Saved Address")
+          .once()
+          .then((snap) {
+        if (snap.snapshot.value != null) {
+          Map<dynamic, dynamic> values =
+              snap.snapshot.value as Map<dynamic, dynamic>;
+          print(values);
+          values.forEach((key, value) {
+            savedList.add(PredictedPlaces(
+              place_id: value["location_id"],
+              main_text: value["location_name"],
+              secondary_text: value["location_name"],
+            ));
+          });
+          print(savedList[0].place_id);
+        }
+      });
+    });
   }
 
   @override
@@ -140,6 +169,28 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           ),
 
           //display place predictions result
+          // (savedList.length > 0)
+          //     ? Expanded(
+          //         child: ListView.separated(
+          //           itemCount: savedList.length,
+          //           physics: ClampingScrollPhysics(),
+          //           itemBuilder: (context, index) {
+          //             return PlacePredictionTileDesign(
+          //               predictedPlaces: savedList[index],
+          //             );
+          //           },
+          //           separatorBuilder: (BuildContext context, int index) {
+          //             return Divider(
+          //               height: 1,
+          //               color: Colors.black,
+          //               thickness: 1,
+          //               indent: _width * 0.05,
+          //               endIndent: _width * 0.05,
+          //             );
+          //           },
+          //         ),
+          //       )
+          //     : SizedBox.shrink(),
           (placesPredictedList.length > 0)
               ? Expanded(
                   child: ListView.separated(

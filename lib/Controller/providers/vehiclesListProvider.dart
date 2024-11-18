@@ -116,6 +116,6 @@ class Vehicleslistprovider extends ChangeNotifier {
   double calculateFareAmountForFixedVehicles(
       {required DirectionDetailsInfo directionDetailsInfo,
       required FixedVehicleType vehicle}) {
-    return vehicle.Price;
+    return vehicle.price;
   }
 }

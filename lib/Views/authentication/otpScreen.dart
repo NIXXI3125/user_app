@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:users_app_cracon/Controller/global/global.dart';
-import 'package:users_app_cracon/Views/authentication/phoneAuthScreen.dart';
 import 'package:users_app_cracon/Views/authentication/signup_screen.dart';
 import 'package:users_app_cracon/Views/splashScreen/splash_screen.dart';
-import 'package:users_app_cracon/models/user_model.dart';
 
 class otpScreen extends StatelessWidget {
   otpScreen({
@@ -147,9 +145,9 @@ class otpScreen extends StatelessWidget {
                     }))
                         .user;
                     if (firebaseUser != null) {
-                      DatabaseReference driversRef =
+                      DatabaseReference usersRef =
                           FirebaseDatabase.instance.ref().child("users");
-                      driversRef
+                      usersRef
                           .child(firebaseUser!.uid)
                           .once()
                           .then((driverKey) {

@@ -42,6 +42,10 @@ class _VehiclesListState extends State<VehiclesList> {
                         (index) {
                           return buildVehicleTile(
                             image: vehicle.deliveryvehicleList![index].image,
+                            loadingCapacity: vehicle
+                                .deliveryvehicleList![index].loading_capacity
+                                ?.ceil()
+                                .toString(),
                             type: vehicle.deliveryvehicleList![index].type
                                 .split('_')
                                 .map((word) =>
@@ -54,18 +58,18 @@ class _VehiclesListState extends State<VehiclesList> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Tripsummaryscreen(
-                                          VehicleType: vehicle
+                                          vehicleType: vehicle
                                               .deliveryvehicleList![index].type,
                                           vehicleImage: vehicle
                                               .deliveryvehicleList![index]
                                               .image,
-                                          loading_capacity: vehicle
+                                          loadingCapacity: vehicle
                                               .deliveryvehicleList![index]
                                               .loading_capacity,
-                                          unloading_time: vehicle
+                                          unloadingTime: vehicle
                                               .deliveryvehicleList![index]
                                               .unloading_time,
-                                          waiting_charge: vehicle
+                                          waitingCharge: vehicle
                                               .deliveryvehicleList![index]
                                               .waiting_charge,
                                           cost:
@@ -87,18 +91,30 @@ class _VehiclesListState extends State<VehiclesList> {
                                 .map((word) =>
                                     word[0].toUpperCase() + word.substring(1))
                                 .join(' '),
-                            cost: '₹ ${vehicle.fixedvehicleList![index].Price}',
+                            cost: '₹ ${vehicle.fixedvehicleList![index].price}',
+                            loadingCapacity: vehicle
+                                .fixedvehicleList![index].loading_capacity
+                                ?.ceil()
+                                .toString(),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Tripsummaryscreen(
-                                          VehicleType: vehicle
+                                          vehicleType: vehicle
                                               .fixedvehicleList![index].type,
                                           cost:
-                                              '₹ ${vehicle.fixedvehicleList![index].Price}',
+                                              '₹ ${vehicle.fixedvehicleList![index].price}',
                                           vehicleImage: vehicle
                                               .fixedvehicleList![index].image,
+                                          loadingCapacity: vehicle
+                                              .fixedvehicleList![index]
+                                              .loading_capacity,
+                                          unloadingTime: vehicle
+                                              .fixedvehicleList![index]
+                                              .unloading_time,
+                                          waitingCharge: vehicle
+                                              .fixedvehicleList![index].waiting_charge,
                                         )),
                               );
                             },
@@ -116,6 +132,10 @@ class _VehiclesListState extends State<VehiclesList> {
                                 .map((word) =>
                                     word[0].toUpperCase() + word.substring(1))
                                 .join(' '),
+                            loadingCapacity: vehicle.heavyvehicleList![index]
+                                .loading_capacity
+                                ?.ceil()
+                                .toString(),
                             cost:
                                 '₹ ${vehicle.heavyvehicleList![index].basePrice}',
                             isHeavy: true,
@@ -124,12 +144,20 @@ class _VehiclesListState extends State<VehiclesList> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Tripsummaryscreen(
-                                          VehicleType: vehicle
+                                          vehicleType: vehicle
                                               .heavyvehicleList![index].type,
                                           cost:
                                               '₹ ${vehicle.heavyvehicleList![index].basePrice}',
                                           vehicleImage: vehicle
                                               .heavyvehicleList![index].image,
+                                          loadingCapacity: vehicle
+                                              .heavyvehicleList![index]
+                                              .loading_capacity,
+                                          unloadingTime: vehicle
+                                              .heavyvehicleList![index]
+                                              .unloading_time,
+                                          waitingCharge: vehicle
+                                              .heavyvehicleList![index].waiting_charge,
                                         )),
                               );
                             },
@@ -153,6 +181,7 @@ Widget buildVehicleTile({
   required String image,
   required String type,
   required String cost,
+  String? loadingCapacity,
   required VoidCallback onTap,
   bool isHeavy = false,
 }) {
@@ -170,7 +199,21 @@ Widget buildVehicleTile({
         );
       },
     ),
-    title: Text(type),
+    title: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          type,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+        (loadingCapacity != null)
+            ? Text(
+                "$loadingCapacity Kgs",
+                style: const TextStyle(fontSize: 12),
+              )
+            : const SizedBox.shrink(),
+      ],
+    ),
     trailing: isHeavy
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.end,

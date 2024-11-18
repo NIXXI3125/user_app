@@ -9,17 +9,17 @@ class Tripsummaryscreen extends StatelessWidget {
   const Tripsummaryscreen(
       {super.key,
       required this.cost,
-      required this.VehicleType,
-      this.loading_capacity,
-      this.unloading_time,
-      this.waiting_charge,
+      required this.vehicleType,
+      this.loadingCapacity,
+      this.unloadingTime,
+      this.waitingCharge,
       required this.vehicleImage});
   final String cost;
-  final String VehicleType;
+  final String vehicleType;
   final String vehicleImage;
-  final double? loading_capacity;
-  final double? unloading_time;
-  final double? waiting_charge;
+  final double? loadingCapacity;
+  final double? unloadingTime;
+  final double? waitingCharge;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class Tripsummaryscreen extends StatelessWidget {
               builder: (context) => ChangeNotifierProvider(
                 create: (context) => Searchingscreenprovider(),
                 child: SearchingScreens(
-                  VehicleType: VehicleType,
+                  VehicleType: vehicleType,
                   cost: cost,
                 ),
               ),
@@ -81,7 +81,7 @@ class Tripsummaryscreen extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.network(
                         vehicleImage,
@@ -93,7 +93,7 @@ class Tripsummaryscreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            VehicleType.split('_')
+                            vehicleType.split('_')
                                 .map((word) =>
                                     word[0].toUpperCase() + word.substring(1))
                                 .join(' '),
@@ -107,7 +107,7 @@ class Tripsummaryscreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Container(
+                  (loadingCapacity != null) ?Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 5,
                       horizontal: 15,
@@ -119,19 +119,19 @@ class Tripsummaryscreen extends StatelessWidget {
                         stops: [0.8, 1.0],
                       ),
                     ),
-                    child: Row(
+                    child:  Row(
                       children: [
                         Text(
-                          'Free ${unloading_time?.ceil()} mins of loading and unloading Time.',
-                          style: TextStyle(
+                          'Free ${unloadingTime?.ceil()} mins of loading and unloading Time.',
+                          style: const TextStyle(
                             fontSize: 13,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
-                    ),
-                  ),
+                    ) ,
+                  ): SizedBox.shrink(),
                 ],
               ),
             ),
@@ -265,9 +265,9 @@ class Tripsummaryscreen extends StatelessWidget {
                             bulletLines(
                                 'Fare doesn\'t include labour \ncharges for loading & unloading'),
                             bulletLines(
-                                'Fare includes ${unloading_time?.ceil()} mins free\nloading/unloading time.'),
+                                'Fare includes ${unloadingTime?.ceil()} mins free\nloading/unloading time.'),
                             bulletLines(
-                                '₹ ${waiting_charge?.ceil()}/min for additional loading/\nunloading time.'),
+                                '₹ ${waitingCharge?.ceil()}/min for additional loading/\nunloading time.'),
                             bulletLines(
                                 'Fare may change if route \nor location changes.'),
                             bulletLines(
@@ -294,7 +294,7 @@ Widget bulletLines(String text) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '•   ',
         style: TextStyle(
           fontSize: 16,
